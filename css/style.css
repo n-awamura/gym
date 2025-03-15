@@ -1,0 +1,83 @@
+/* 既存のスタイル */
+.calendar {
+    margin-top: 20px;
+  }
+  .calendar-day {
+    border: 1px solid #ddd;
+    padding: 5px;
+    height: 120px;
+    position: relative;
+    text-align: center;
+  }
+  .calendar-day.gym-day {
+    background-color: #e6f7ff;
+  }
+  .calendar-day:not(.gym-day){
+    background-color: #eee;
+  }
+  
+  .day-number {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  .day-content {
+  font-size: 0.8em;
+  }
+  .record-button {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    padding: 2px 5px;
+    font-size: 0.8em;
+  }
+  
+  /* iPhone SE 用のスタイル (メディアクエリ) */
+  @media (max-width: 375px) {
+    .container {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    h1 {
+        font-size: 1.5em;
+    }
+    h2{
+        font-size: 1.2em;
+    }
+  
+    .calendar-day {
+        height: 80px;
+        padding: 3px;
+    }
+    .day-number {
+        font-size: 1em;
+    }
+    .day-content {
+        font-size: 0.7em;
+    }
+  
+    .record-button {
+        padding: 1px 3px;
+        font-size: 0.7em;
+        bottom: 2px;
+        right:2px;
+    }
+    #prev-month, #next-month{
+        padding: 2px 4px;
+        font-size: 0.8em;
+    }
+    .modal-dialog {
+        max-width: 95%;
+    }
+    .modal-body label{
+    font-size: 0.9em;
+    }
+    .modal-body input{
+    font-size: 0.8em;
+    }
+    #add-set{
+    font-size:0.8em;
+    }
+    .modal-footer button{
+    font-size: 0.9em;
+    }
+  }
