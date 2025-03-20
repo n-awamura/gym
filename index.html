@@ -1,62 +1,134 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ジムトレーニング記録</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WORKOUT LOG</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <!-- 外部スタイルシート -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Firebase SDK と設定を外部ファイルから読み込み -->
+  <script type="module" src="js/firebase-config.js"></script>
+  <!-- 認証状態チェック用のスクリプト -->
+  <script type="module">
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+    // onAuthStateChanged を使って認証状態を確認
+    onAuthStateChanged(window.auth, (user) => {
+      console.log("onAuthStateChanged:", user);
+      if (!user) {
+        console.log("未認証のため、login.html へリダイレクトします");
+        window.location.href = "login.html";
+      } else {
+        console.log("認証済みのユーザーがいます。");
+      }
+    });
+  </script>
 </head>
 <body>
-    <h1>ジムトレーニング記録</h1>
-
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <button id="prev-month" class="btn btn-outline-secondary">前月</button>
-          <button id="next-month" class="btn btn-outline-secondary">次月</button>
-          <h2><span id="current-year"></span>年 <span id="current-month"></span>月</h2>
-            <div class="calendar">
-                </div>
+  <!-- ヘッダー（既存のスタイルを維持） -->
+  <header id="main-header" class="container d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <img class="logo" src="img/fudaoxiang.png" alt="ロゴ" width="30" height="30">
+      <span class="title">WORKOUT LOG</span>
+    </div>
+    <div class="d-flex align-items-center">
+      <a href="memo.html"><i class="bi bi-journal-text menu-icon"></i></a>
+      <div class="dropdown">
+        <button class="btn dropdown-toggle" type="button" id="hamburgerMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="bi bi-list"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="hamburgerMenu">
+          <a class="dropdown-item" href="#" id="restoreIcon">リストア</a>
+          <a class="dropdown-item" href="#" id="backupIcon">バックアップ(手動)</a>
         </div>
       </div>
     </div>
+  </header>
 
-    <div class="modal fade" id="dayModal" tabindex="-1" role="dialog" aria-labelledby="dayModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="dayModalLabel">日付のトレーニング記録</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+  <!-- メイン部分 -->
+  <main class="container">
+    <!-- カレンダー上部 -->
+    <div id="calendar-wrapper">
+      <!-- 年月表示部分：左右の < と > で月送り -->
+      <div class="month-display-wrapper">
+        <span id="monthLeft" class="month-nav clickable">&lt;</span>
+        <span id="monthDisplay" class="mx-2"></span>
+        <span id="monthRight" class="month-nav clickable">&gt;</span>
+      </div>
+      <!-- カレンダー本体 -->
+      <div class="calendar"></div>
+    </div>
+    <!-- モーダル -->
+<div class="modal fade" id="dayModal" tabindex="-1" role="dialog" aria-labelledby="dayModalLabel">
+  <div class="modal-dialog">
+    <div class="modal-content modal-custom">
+      
+      <!-- モーダルヘッダー -->
+      <div class="modal-header modal-header-custom">
+        <h5 class="modal-title" id="dayModalLabel">日付のログ</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="color: #fff;">&times;</span>
+        </button>
+      </div>
+      
+      <!-- モーダル本文 -->
+      <div class="modal-body">
+        <form class="modal-form">
+          <!-- 隠しフィールド -->
+          <input type="hidden" id="modal-date" name="modalDate" />
+
+          <!-- 部位選択：ラベルを削除し、placeholder風の最初の option を追加 -->
+          <div class="form-group modal-section">
+            <select id="bodyPartSelect" class="form-control">
+              <option value="" disabled selected style="opacity: 0.5;">部位</option>
+              <option value="upper">上半身</option>
+              <option value="lower">下半身</option>
+            </select>
+          </div>
+
+          <!-- 種目入力行を追加するコンテナ -->
+          <div id="exercise-container" class="modal-section"></div>
+
+          <!-- 種目追加ボタン（アイコン表示：plus-circle-fill）を、種目欄とメモ欄の間に配置 -->
+          <div class="button-section d-flex justify-content-start mb-2">
+            <button type="button" id="add-exercise" class="btn custom-btn2">
+              <i class="bi bi-plus-circle-fill"></i>
             </button>
           </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                <label for="exercise">種目</label>
-                <input type="text" class="form-control" id="exercise">
-              </div>
-              <div class="form-group">
-                <label for="reps">回数</label>
-                <input type="number" class="form-control" id="reps">
-              </div>
-              <button type="button" class="btn btn-success" id="add-set">+</button>
 
-            </form>
-              <div id="recorded-sets">
-              </div>
+          <!-- メモ欄 -->
+          <div class="form-group modal-section memo-section mt-3">
+            <label for="modalMemo">memo</label>
+            <textarea id="modalMemo" class="form-control" rows="3"></textarea>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
-            <button type="button" class="btn btn-primary">保存</button>
-          </div>
-        </div>
+
+          <!-- ここで保存ボタンと削除ボタンを横並びにし、常に表示する -->
+          <div class="button-section d-flex justify-content-end">
+            <!-- 保存ボタン -->
+            <button type="button" id="saveModalButton" class="btn custom-btn mr-2">
+              <i class="bi bi-save2-fill"></i>
+            </button>
+            <!-- 削除ボタン（新規時はdisabledにする） -->
+            <button type="button" id="deleteRecordButton" class="btn custom-btn">
+              <i class="bi bi-trash"></i>
+            </button>
+         </div>
+        </form>
       </div>
+      
+      <!-- ※モーダルフッターは今回使用しない -->
     </div>
+  </main>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="js/script.js"></script>
+  <!-- Bootstrap / jQuery の読み込み -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- メインスクリプト -->
+  <script type="module" src="js/script.js"></script>
 </body>
 </html>
