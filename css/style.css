@@ -1,83 +1,387 @@
-/* 既存のスタイル */
-.calendar {
-    margin-top: 20px;
+/* ===============================
+   Google Fonts の読み込み
+=============================== */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+
+/* ===============================
+   全体の基本設定
+=============================== */
+body {
+  font-family: 'Noto Sans JP', sans-serif !important;
+}
+#main-header.container,
+main.container {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+/* ===============================
+   ヘッダー
+=============================== */
+#main-header {
+  background-color: #526d82 !important;
+  height: 50px !important;
+  margin-bottom: 15px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+#main-header .logo {
+  /* ロゴはそのまま左寄せ */
+}
+#main-header .title {
+  font-family: 'Montserrat', sans-serif !important;
+  color: #FFFFFF !important;
+  margin-left: 10px !important;
+  font-size: 1.3rem !important;
+}
+#main-header .dropdown-toggle {
+  background-color: #526d82 !important;
+  border: none !important;
+  color: #FFFFFF !important;
+}
+.dropdown-menu {
+  background-color: #526d82 !important;
+  border: none !important;
+}
+.dropdown-item {
+  color: #FFFFFF !important;
+}
+.dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+.menu-icon {
+  color: #FFFFFF !important;
+  font-size: 1.5rem !important;
+  margin-right: 10px !important;
+}
+
+#hamburgerMenu:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* ===============================
+   カレンダー
+=============================== */
+.month-display-wrapper {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin-top: 10px !important;
+  font-family: 'Noto Sans JP', sans-serif !important;
+  color: #324454 !important;
+  font-size: 1.2rem !important;
+}
+.month-nav {
+  cursor: pointer !important;
+  user-select: none;
+  margin: 0 5px !important;
+}
+.calendar,
+.calendar-grid {
+  border: none !important;
+}
+.calendar-header {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr) !important;
+  text-align: center !important;
+  font-weight: bold !important;
+  width: 100% !important;
+  font-family: 'Noto Sans JP', sans-serif !important;
+  background-color: #FFFFFF !important;
+  color: #324454 !important;
+  border: none !important;
+}
+.calendar-header .header-cell {
+  padding: 5px 0 !important;
+}
+.calendar-day {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 90px;
+  border-right: 1px solid #526d82;
+  border-bottom: 1px solid #526d82;
+  background-color: #fff;
+  color: #324454;
+  text-align: center;
+}
+.calendar-day:nth-child(7n) {
+  border-right: none;
+}
+.empty-day {
+  border-right: 1px solid #526d82;
+  border-bottom: 1px solid #526d82;
+  background-color: #f9f9f9;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 120px;
+  text-align: center;
+}
+.empty-day:nth-child(7n) {
+  border-right: none;
+}
+.day-info {
+  grid-row: 1;
+  justify-self: center;
+  align-self: start;
+  margin-top: 5px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+.day-summary {
+  grid-row: 2;
+  justify-self: center;
+  align-self: center;
+  min-height: 20px;
+  font-size: 0.8rem;
+  color: #324454;
+}
+.edit-button {
+  grid-row: 3;
+  justify-self: center;
+  align-self: end;
+  margin-bottom: 5px;
+  background-color: #f9f9f9;
+  border: 1px solid #526d82;
+  border-radius: 4px;
+  width: 25px;
+  height: 25px;  
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.edit-button:hover {
+  background-color: #526d82;
+  color: #fff;
+}
+
+/* ===============================
+   iPhone SE 対応（max-width: 375px）
+=============================== */
+@media (max-width: 375px) {
+  .container {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+  #main-header .title {
+    font-size: 1.2rem !important;
+  }
+  .month-display-wrapper {
+    font-size: 1rem !important;
+  }
+  .calendar-header {
+    font-size: 0.85em !important;
+    margin-top: 5px;
+  }
+  .calendar-grid {
+    grid-template-columns: repeat(7, 1fr) !important;
+    font-size: 0.75em !important;
   }
   .calendar-day {
-    border: 1px solid #ddd;
-    padding: 5px;
-    height: 120px;
-    position: relative;
-    text-align: center;
+    min-height: 90px !important;
+    padding: 3px !important;
   }
-  .calendar-day.gym-day {
-    background-color: #e6f7ff;
+  .day-info {
+    font-size: 0.9em !important;
   }
-  .calendar-day:not(.gym-day){
-    background-color: #eee;
+  .edit-button {
+    font-size: 0.7em !important;
+    margin-bottom: 3px !important;
+    justify-self: center !important;
+    align-self: end !important;
   }
-  
-  .day-number {
-    font-size: 1.2em;
-    font-weight: bold;
-  }
-  .day-content {
-  font-size: 0.8em;
-  }
-  .record-button {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    padding: 2px 5px;
-    font-size: 0.8em;
-  }
-  
-  /* iPhone SE 用のスタイル (メディアクエリ) */
-  @media (max-width: 375px) {
-    .container {
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-    h1 {
-        font-size: 1.5em;
-    }
-    h2{
-        font-size: 1.2em;
-    }
-  
-    .calendar-day {
-        height: 80px;
-        padding: 3px;
-    }
-    .day-number {
-        font-size: 1em;
-    }
-    .day-content {
-        font-size: 0.7em;
-    }
-  
-    .record-button {
-        padding: 1px 3px;
-        font-size: 0.7em;
-        bottom: 2px;
-        right:2px;
-    }
-    #prev-month, #next-month{
-        padding: 2px 4px;
-        font-size: 0.8em;
-    }
-    .modal-dialog {
-        max-width: 95%;
-    }
-    .modal-body label{
-    font-size: 0.9em;
-    }
-    .modal-body input{
-    font-size: 0.8em;
-    }
-    #add-set{
-    font-size:0.8em;
-    }
-    .modal-footer button{
-    font-size: 0.9em;
-    }
-  }
+}
+
+/* ---------------------------------
+   モーダル全体のベース
+---------------------------------- */
+.modal-content {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.9rem;
+  background-color: #fff;
+}
+.modal-form {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 15px;
+}
+.modal-section {
+  margin-bottom: 15px;
+}
+.modal-footer {
+  padding-left: 15px;
+  padding-right: 15px;
+  box-sizing: border-box;
+}
+
+/* ---------------------------------
+   種目入力行 (.exercise-row)
+   各行をFlexで5列に分割
+---------------------------------- */
+.exercise-row {
+  display: flex;
+  gap: 10px;          /* カラム間の余白 */
+  margin-bottom: 10px;
+}
+.exercise-row > div {
+  flex: 1;            /* 5列を等幅に */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 入力欄 (Bootstrapの.form-controlを上書き) */
+.exercise-row .form-control {
+  width: auto !important;   /* デフォルトのwidth:100%を解除 */
+  min-width: 0 !important;
+  font-size: 0.9rem !important;
+  text-align: center;       /* 文字を中央寄せ */
+  box-sizing: border-box;
+  padding: 0.3rem 0.5rem !important;
+}
+
+/* 種目の最小幅 (全角3~4文字程度) */
+.exercise-name {
+  max-width: 5.5em;
+}
+/* 負荷 (半角4~5文字分) */
+.exercise-weight {
+  max-width: 4em;
+}
+/* 回数 (半角2~3文字分) */
+.exercise-reps {
+  max-width: 3em;
+}
+/* セット (半角2文字分) */
+.exercise-sets {
+  max-width: 3em;
+}
+
+/* ゴミ箱ボタン (削除ボタン) */
+.exercise-row .btn.btn-danger {
+  font-size: 0.9rem;
+  padding: 0.5rem 0.5rem;
+  line-height: 1.2;
+  background-color: #526d82;
+  border-color: #526d82;
+  color: #fff;
+}
+.exercise-row .btn.btn-danger:hover {
+  background-color: #435f70;
+  border-color: #435f70;
+  color: #fff;
+}
+.exercise-row .btn.btn-danger i {
+  font-size: 0.9rem;
+}
+
+/* ---------------------------------
+   種目追加・保存ボタン (.custom-btn)
+---------------------------------- */
+.custom-btn {
+  width: 30px;
+  height: 30px;
+  /* アイコンやテキストを上下中央に配置 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 他のスタイル（背景色や枠線、色など） */ 
+  background-color: #f9f9f9;
+  border: 1px solid #526d82;
+  color: #526d82;
+  border-radius: 4px;
+  padding: 0;
+  font-size: 1rem;
+}
+
+.custom-btn2 {
+  background-color: #fff;
+  border: none; 
+  color: #526d82;
+  font-size: 0.9rem;
+  padding: 0.25rem 0.5rem;
+  width: 30px;
+  height: 30px;
+  /* アイコンやテキストを上下中央に配置 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 他のスタイル（背景色や枠線、色など） */
+  background-color: #fff;
+  border: none ;
+  color: #526d82;
+  border-radius: 4px;
+  padding: 0;
+  font-size: 1rem;
+}
+
+.custom-btn:hover {
+  background-color: #435f70;
+  border-color: #435f70;
+  color: #fff;
+}
+
+/* 隠しフィールド（modal-date） */
+#modal-date {
+  display: none;
+}
+
+/* ===============================
+   モーダル全体のスタイル調整
+=============================== */
+.modal-custom {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.9rem;
+  background-color: #fff;
+  color: #526d82; /* モーダル内の文字色 */
+}
+
+/* -------------------------------
+   モーダルヘッダーのカスタムスタイル
+------------------------------- */
+.modal-header-custom {
+  background-color: #526d82 !important;
+  color: #fff !important;
+  /* ヘッダーと本文の間隔を狭めるためにパディングを調整 */
+  padding-bottom: 0.5rem !important;
+  margin-bottom: 0;
+}
+
+.modal-header-custom .modal-title {
+  color: #fff !important;
+}
+
+/* -------------------------------
+   モーダル本文の上部パディング調整
+------------------------------- */
+.modal-body {
+  padding-top: 0.5rem !important;
+}
+
+/* ===============================
+   プレースホルダーの文字色（既存の記述）
+=============================== */
+.exercise-weight::placeholder,
+.exercise-reps::placeholder,
+.exercise-sets::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* 部位選択（ドロップダウン）とメモ欄の文字サイズを統一 */
+#bodyPartSelect,
+#modalMemo {
+  font-size: 0.9rem !important;
+}
+
+.modal-header .close span {
+  color: #fff !important;
+}
+
+.memo-page {
+  font-family: 'Noto Sans JP', sans-serif;
+  color: #324454;
+}
