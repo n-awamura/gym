@@ -163,10 +163,16 @@ main.container {
 }
 
 .day-info.today {
+  width: 20px;        /* 固定幅 */
+  height: 20px;       /* 固定高さ */
   border: 1px solid #526d82;
-  border-radius: 50%;
-  padding: 2px;
-  display: inline-block;
+  border-radius: 50%; /* 完全な円形にする */
+  display: flex;      /* 中央にテキストを配置 */
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;  /* 必要に応じて調整 */
+  /* 余分なpaddingは削除または調整 */
+  padding: 0;
 }
 
 .day-summary {
