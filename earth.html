@@ -54,35 +54,7 @@
         </div>
       </div>
     </div>
-  </header>
-  <!-- header の直後に追加 -->
-<div id="page-switcher" style="background-color: #d8dbe0; display: flex; justify-content: center; width: 100%; margin-top: 0; padding: 0;">
-  <div id="tab1" class="switch-tab" style="
-      flex: 1;
-      text-align: center;
-      padding: 5px;
-      font-family: 'Noto Sans JP', sans-serif !important;
-      color: #324454 !important;
-      font-size: 0.7rem !important;
-      border-bottom: 1px solid #526d82;
-      cursor: pointer;
-    ">
-    日台往復
-  </div>
-  <div id="tab2" class="switch-tab" style="
-      flex: 1;
-      text-align: center;
-      padding: 5px;
-      font-family: 'Noto Sans JP', sans-serif !important;
-      color: #324454 !important;
-      font-size: 0.7rem !important;
-      border-bottom: 1px solid transparent;
-      cursor: pointer;
-    ">
-    電車環島
-  </div>
-</div>
-  
+  </header>   
   <!-- メイン部分 -->
   <main class="container">
     <!-- map.html を iframe で埋め込む -->
@@ -94,21 +66,6 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script type="module" src="js/script.js"></script>
-  <!-- ページ切替用の JavaScript -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('tab1').addEventListener('click', function() {
-        document.getElementById('mapFrame').src = 'map.html';
-        this.style.borderBottomColor = '#526d82';
-        document.getElementById('tab2').style.borderBottomColor = 'transparent';
-      });
   
-      document.getElementById('tab2').addEventListener('click', function() {
-        document.getElementById('mapFrame').src = 'map2.html';
-        this.style.borderBottomColor = '#526d82';
-        document.getElementById('tab1').style.borderBottomColor = 'transparent';
-      });
-    });
-  </script>
 </body>
 </html>
