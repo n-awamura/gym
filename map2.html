@@ -21,15 +21,39 @@
     #container {
       width: 320px;
       margin: 0 auto;
+      position: relative;
     }
-    /* 上部テキスト：margin-top:30px */
+    /* 上部テキスト：中央寄せ、margin-top:25px */
     #topInfo {
-      margin-top: 25px;
+      margin-top: 15px;
+      margin-bottom: 25px;
       text-align: center;
       font-size: 12px;
       line-height: 1.4;
     }
-    /* 地図: 320×320px, margin-top:30px, 薄いグレー枠 */
+    /* アイコンコンテナ：上部テキストと地図の間に配置、右寄せ */
+    #iconContainer {
+      margin: 8px 0;   /* 上下に隙間を作る */
+      text-align: right;
+    }
+    #iconContainer i {
+      font-size: 20px;
+      color: #526d82;
+      margin-left: 4px;
+    }
+    #iconContainer a {
+      text-decoration: none;
+      border: none;
+      color: inherit;
+    }
+    #iconContainer a:focus,
+    #iconContainer a:active,
+    #iconContainer a:visited {
+      outline: none;
+      box-shadow: none;
+    }
+
+    /* 地図: 320×320px, margin-top:15px, 薄いグレー枠 */
     #map {
       margin-top: 15px;
       width: 320px;
@@ -37,19 +61,19 @@
       border: 1px solid #ccc;
       margin-left: auto;
       margin-right: auto;
+      position: relative;
+      z-index: 1;
     }
-
     .leaflet-tile-pane {
       filter: brightness(0.8);
     }
-
-    /* 下部情報（任意） */
+    /* 下部補足情報（任意） */
     #info {
       font-size: 12px;
       padding: 4px;
       text-align: center;
     }
-    /* 電車アイコン：train-front-fill、サイズ小さめ、枠線なし、回転指定なし */
+    /* 電車アイコン：train-front-fill、サイズ小さめ、枠線なし */
     .rotated-train {
       font-size: 20px !important;
       display: inline-block;
@@ -63,9 +87,14 @@
   <div id="container">
     <!-- 上部テキスト -->
     <div id="topInfo"></div>
+    <!-- アイコンコンテナ (上部テキストと地図の間) -->
+    <div id="iconContainer">
+      <a href="map.html"><i class="bi bi-airplane-fill"></i></a>
+      <a href="map2.html"><i class="bi bi-train-front-fill"></i></a>
+    </div>
     <!-- 地図表示 -->
     <div id="map"></div>
-    <!-- 下部補足情報（任意） -->
+    <!-- 下部補足情報 -->
     <div id="info"></div>
   </div>
   
@@ -224,20 +253,20 @@
       // 地図作成
       const map = L.map('map', { zoomControl: false, attributionControl: false });
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
-      // ポリライン描画：白色2px線
+      
+      // ポリライン描画：白色1px線
       const polyline = L.polyline(fullRoute, {
         color: '#ffffff',
         weight: 1,
         opacity: 1
       }).addTo(map);
-      // できるだけ島全体が拡大表示されるよう、paddingを小さく設定
+      
+      // 拡大表示：全体が表示されるよう、paddingを小さく設定
       map.fitBounds(polyline.getBounds(), { padding: [2, 2] });
       
-      // 電車アイコン：train-front-fill、回転なし、色は白
+      // 電車アイコン：train-front-fill、色は白
       const trainHtml = `
-        <i class="bi bi-train-front-fill rotated-train"
-           style="color:#fff;">
-        </i>
+        <i class="bi bi-train-front-fill rotated-train" style="color:#fff;"></i>
       `;
       const trainIcon = L.divIcon({
         html: trainHtml,
@@ -246,7 +275,6 @@
         iconAnchor: [12, 12]
       });
       L.marker([trainState.lat, trainState.lon], { icon: trainIcon }).addTo(map);
-      
     });
   </script>
 </body>

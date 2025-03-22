@@ -17,28 +17,63 @@
       font-family: 'Noto Sans JP', sans-serif;
       color: #324454;
     }
-    /* コンテナ：幅280pxに固定して中央寄せ */
+    /* コンテナ：幅320pxに固定して中央寄せ */
     #container {
       width: 320px;
       margin: 0 auto;
+      position: relative; /* 子要素の配置の基準 */
     }
     /* 上部テキスト (往路/復路情報) */
     #topInfo {
-      margin-top: 25px;      
+      margin-top: 15px;
+      margin-bottom: 25px;
       font-size: 12px;
+      text-align: center;
     }
-    /* 地図は 280×280px, margin-top:30px, 薄いグレー枠線 */
+    /* アイコンコンテナ：上部テキストと地図の間に配置、右寄せ */
+    #iconContainer {
+      margin: 8px 0;   /* 上下に隙間を作る */
+      text-align: right;
+    }
+    #iconContainer i {
+      font-size: 20px;
+      color: #526d82;
+      margin-left: 4px;  /* アイコン同士の間隔用 */
+    }
+    #iconContainer a {
+      text-decoration: none;
+      border: none;
+      color: inherit; /* アイコンの色をそのまま継承 */
+    }
+    #iconContainer a,
+    #iconContainer i {
+      vertical-align: middle;
+      line-height: 1;
+    }
+    #iconContainer a:focus,
+    #iconContainer a:active,
+    #iconContainer a:visited {
+      outline: none;
+      box-shadow: none;
+    }
+    /* 地図は320×320px, 薄いグレー枠線 */
     #map {
       margin-top: 15px;
       width: 320px;
       height: 320px;
       border: 1px solid #ccc;
+      position: relative; /* 地図は相対配置 */
+      z-index: 1;
     }
     .leaflet-tile-pane {
       filter: brightness(0.92);
     }
-
-
+    /* 下部進捗情報 */
+    #info {
+      font-size: 12px;
+      text-align: center;
+      margin-top: 8px;
+    }
     /* 飛行機アイコン: 一回り小さく、枠線なし */
     .rotated-plane {
       font-size: 24px !important;
@@ -58,6 +93,15 @@
   <div id="container">
     <!-- 上部テキスト (往路/復路情報) -->
     <div id="topInfo"></div>
+    <!-- アイコンコンテナ (上部テキストと地図の間) -->
+    <div id="iconContainer">
+      <a href="map.html">
+        <i class="bi bi-airplane-fill"></i>
+      </a>
+      <a href="map2.html">
+        <i class="bi bi-train-front-fill"></i>
+      </a>
+    </div>
     <!-- 地図表示 -->
     <div id="map"></div>
     <!-- 下部進捗情報 -->
@@ -194,7 +238,7 @@
         iconSize: [24, 24],
         iconAnchor: [12, 12]
       });
-      L.marker([plane1.lat, plane1.lon], { icon: icon1 }).addTo(map);      
+      L.marker([plane1.lat, plane1.lon], { icon: icon1 }).addTo(map);
     });
   </script>
 </body>
