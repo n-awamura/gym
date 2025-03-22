@@ -581,6 +581,12 @@ const elephantImg = document.getElementById("elephantImg");
       // APIの結果が返ってきたら吹き出し内にテキストをセットし、表示状態にする
       elephantBubble.innerText = result;
       elephantBubble.classList.add("visible");
+    
+    // 8秒後に吹き出しを自動で非表示にする
+    setTimeout(() => {
+      elephantBubble.classList.remove("visible");
+    }, 8000);
+
     });
   }
 });
