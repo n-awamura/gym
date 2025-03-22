@@ -239,22 +239,23 @@
       L.marker([plane1.lat, plane1.lon], { icon: icon1 }).addTo(map);
 
       // --- 国旗マーカーの追加 ---
-// 栃木あたり（例: 宇都宮市周辺）の日本国旗
-const japanIcon = L.icon({
-  iconUrl: 'https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/320px-Flag_of_Japan.svg.png',
-  iconSize: [20, 13],  // 横20px、縦は2:3の比率（約13px）
-  iconAnchor: [10, 7]  // 中央にアンカーを合わせる
-});
-// 台中あたりの台湾国旗
-const taiwanIcon = L.icon({
-  iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Flag_of_the_Republic_of_China.svg/320px-Flag_of_the_Republic_of_China.svg.png',
-  iconSize: [20, 13],  // 横20px、縦は2:3の比率（約13px）
-  iconAnchor: [10, 7]
-});
-// 栃木あたり (例: [36.5658, 139.8836] 宇都宮市周辺) に日本国旗を追加
-L.marker([36.5658, 139.8836], { icon: japanIcon }).addTo(map);
-// 台中あたり (例: [24.1477, 120.6736]) に台湾国旗を追加
-L.marker([24.1477, 120.6736], { icon: taiwanIcon }).addTo(map);
+      // 長野市あたりの日本国旗
+      const japanIcon = L.icon({
+        iconUrl: 'https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/320px-Flag_of_Japan.svg.png',
+        iconSize: [20, 13],  // 横20px、縦は2:3の比率
+        iconAnchor: [10, 7]  // 中央にアンカーを合わせる
+      });
+      // 台中あたりの台湾国旗
+      const taiwanIcon = L.icon({
+        iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Flag_of_the_Republic_of_China.svg/320px-Flag_of_the_Republic_of_China.svg.png',
+        iconSize: [20, 13],  // 横20px、縦は2:3の比率
+        iconAnchor: [10, 7]
+      });
+      // 松本市あたり (例: [36.2381, 137.9718]) に日本国旗を追加
+        L.marker([36.2381, 137.9718], { icon: japanIcon }).addTo(map);
+        // 台中あたり (例: [24.1477, 120.6736]) に台湾国旗を追加
+        L.marker([24.1477, 120.6736], { icon: taiwanIcon }).addTo(map);
+
 
     });
   </script>
