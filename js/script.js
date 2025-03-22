@@ -499,93 +499,75 @@ document.addEventListener("DOMContentLoaded", function () {
 // ここから象の画像クリックで吹き出し表示／非表示の処理を追加
 // ===============================
 const elephantImg = document.getElementById("elephantImg");
-const elephantBubble = document.getElementById("elephantBubble");
+  const elephantBubble = document.getElementById("elephantBubble");
 
-if (elephantImg && elephantBubble) {
-  elephantImg.addEventListener("click", function() {
-    // 吹き出しのテキスト更新を呼び出す
-    updateSpeechBubble();
+  if (elephantImg && elephantBubble) {
+    elephantImg.addEventListener("click", function() {
+      // クリック時にはまず吹き出しを非表示にしておく
+      elephantBubble.classList.remove("visible");
+      elephantBubble.innerText = "";  // 以前のテキストをクリア
 
-    // 吹き出しが非表示なら表示、表示中なら非表示にする
-    if (elephantBubble.style.display === "none" || elephantBubble.style.display === "") {
-      elephantBubble.style.display = "block";
-    } else {
-      elephantBubble.style.display = "none";
-    }
-  });
-}
-
-// ===============================
-// ここから Gemini API 呼び出しと吹き出し更新の関数定義
-// ===============================
-
-// (A) 日付文字列を生成する関数
-function getTodayString() {
-  const now = new Date();
-  const yyyy = now.getFullYear();
-  const mm = String(now.getMonth() + 1).padStart(2, "0");
-  const dd = String(now.getDate()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}`;
-}
-
-// (B) hogehoge に日付を差し込むプロンプトを生成する関数
-function createPromptWithDate(dateStr) {
-  return `あなたはWikipediaマニアです。まず、${dateStr}が何の日か教えてください。書式は必ず'今日は「XXの日」だゾウ'にして、XXを含めて10文字以内で出力すること。ハッシュタグなどの他の記号は絶対に入れないこと。`;
-}
-
-// (C) Gemini API を呼び出す関数
-function Gemini(prompt) {
-  const apiKey = 'AIzaSyDkX0dNltJWjEJI8vQ-jMhWzM0SAEjOx94'; // ご自身のAPIキー
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-  const payload = {
-    contents: [
-      {
-        parts: [{ text: prompt }]
-      }
-    ]
-  };
-
-  return fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(resJson => {
-      if (resJson && resJson.candidates && resJson.candidates.length > 0) {
-        return resJson.candidates[0].content.parts[0].text;
-      } else {
-        console.error('回答が返されませんでした。');
-        return '不明';
-      }
-    })
-    .catch(error => {
-      console.error('Fetch error:', error);
-      return 'エラー';
+      // API 呼び出しして、結果が返ってきたら表示
+      updateSpeechBubble();
     });
-}
+  }
 
-// (D) 吹き出し更新用の関数
-function updateSpeechBubble() {
-  // 今日の日付を取得し、プロンプト生成
-  const todayStr = getTodayString();
-  const prompt = createPromptWithDate(todayStr);
+  // Gemini API を呼び出す関数
+  function Gemini(prompt) {
+    const apiKey = 'AIzaSyDkX0dNltJWjEJI8vQ-jMhWzM0SAEjOx94'; // ご自身のAPIキー
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+    const payload = {
+      contents: [
+        {
+          parts: [{ text: prompt }]
+        }
+      ]
+    };
 
-  // Gemini で結果を取得
-  Gemini(prompt).then(result => {
-    const bubbleElem = document.getElementById("elephantBubble");
-    if (bubbleElem) {
-      // 返ってきた結果をそのまま表示
-      bubbleElem.innerText = result;
-    }
-  });
-}
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+      })
+      .then(resJson => {
+        if (resJson && resJson.candidates && resJson.candidates.length > 0) {
+          return resJson.candidates[0].content.parts[0].text;
+        } else {
+          console.error('回答が返されませんでした。');
+          return '不明';
+        }
+      })
+      .catch(error => {
+        console.error('Fetch error:', error);
+        return 'エラー';
+      });
+  }
 
+  function getTodayString() {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, "0");
+    const dd = String(now.getDate()).padStart(2, "0");
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  function createPromptWithDate(dateStr) {
+    return `あなたはWikipediaマニアです。まず、${dateStr}が何の日か教えてください。書式は必ず'今日は「XXの日」だゾウ'にして、XXを含めて10文字以内で出力すること。ハッシュタグなどの他の記号は絶対に入れないこと。`;
+  }
+
+  // 吹き出し更新用の関数
+  function updateSpeechBubble() {
+    const todayStr = getTodayString();
+    const prompt = createPromptWithDate(todayStr);
+
+    Gemini(prompt).then(result => {
+      // APIの結果が返ってきたら吹き出し内にテキストをセットし、表示状態にする
+      elephantBubble.innerText = result;
+      elephantBubble.classList.add("visible");
+    });
+  }
 });
