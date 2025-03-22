@@ -13,7 +13,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="MyGymLog">
   <link rel="apple-touch-icon" sizes="180x180" href="img/fudaoxiang.png">
-  
   <!-- ブラウザのテーマカラー -->
   <meta name="theme-color" content="#526d82">
   
@@ -24,8 +23,6 @@
   <!-- 認証状態チェック用のスクリプト -->
   <script type="module">
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-
-    // onAuthStateChanged を使って認証状態を確認
     onAuthStateChanged(window.auth, (user) => {
       console.log("onAuthStateChanged:", user);
       if (!user) {
@@ -37,8 +34,8 @@
     });
   </script>
 </head>
-<body class="memo-page">
-  <!-- ヘッダー（既存のスタイルを維持） -->
+<body>
+  <!-- ヘッダー -->
   <header id="main-header" class="container d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center">
       <img class="logo" src="img/fudaoxiang.png" alt="ロゴ" width="30" height="30">
@@ -46,7 +43,7 @@
     </div>
     <div class="d-flex align-items-center">
       <a href="index.html"><i class="bi bi-calendar2-week menu-icon"></i></a>
-      <a href="earth.html"><i class="bi bi-globe-asia-australia menu-icon"></i></a>
+      <a href="memo.html"><i class="bi bi-journal-text menu-icon"></i></a>
       <div class="dropdown">
         <button class="btn dropdown-toggle" type="button" id="hamburgerMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="bi bi-list"></i>
@@ -58,16 +55,60 @@
       </div>
     </div>
   </header>
-
+  <!-- header の直後に追加 -->
+<div id="page-switcher" style="background-color: #d8dbe0; display: flex; justify-content: center; width: 100%;">
+  <div id="tab1" class="switch-tab" style="
+      flex: 1;
+      text-align: center;
+      padding: 5px;
+      font-family: 'Noto Sans JP', sans-serif !important;
+      color: #324454 !important;
+      font-size: 0.7rem !important;
+      border-bottom: 1px solid #526d82;
+      cursor: pointer;
+    ">
+    日台往復
+  </div>
+  <div id="tab2" class="switch-tab" style="
+      flex: 1;
+      text-align: center;
+      padding: 5px;
+      font-family: 'Noto Sans JP', sans-serif !important;
+      color: #324454 !important;
+      font-size: 0.7rem !important;
+      border-bottom: 1px solid transparent;
+      cursor: pointer;
+    ">
+    電車環島
+  </div>
+</div>
+  
   <!-- メイン部分 -->
-  <main class="container memos">
-    <div id="memoList"></div>
-  </main>
-  <!-- Bootstrap / jQuery の読み込み -->
+  <main class="container">
+    <!-- map.html を iframe で埋め込む -->
+    <iframe id="mapFrame" src="map.html" width="100%" height="500" frameborder="0" style="border:none;"></iframe>
+  </main> 
+  
+  <!-- 以下、index.html の最後の script 情報 -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <!-- メインスクリプト -->
   <script type="module" src="js/script.js"></script>
+  <!-- ページ切替用の JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('tab1').addEventListener('click', function() {
+        document.getElementById('mapFrame').src = 'map.html';
+        this.style.borderBottomColor = '#526d82';
+        document.getElementById('tab2').style.borderBottomColor = 'transparent';
+      });
+  
+      document.getElementById('tab2').addEventListener('click', function() {
+        document.getElementById('mapFrame').src = 'map2.html';
+        this.style.borderBottomColor = '#526d82';
+        document.getElementById('tab1').style.borderBottomColor = 'transparent';
+      });
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>台湾一周ルート - 電車版（連続反時計回り）</title>
+  <!-- iPhone SEでも幅320px固定 -->
+  <meta name="viewport" content="width=320, user-scalable=no">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+      font-family: 'Noto Sans JP', sans-serif;
+      color: #324454;
+    }
+    /* コンテナ：横幅320pxに固定 */
+    #container {
+      width: 320px;
+      margin: 0 auto;
+    }
+    /* 上部テキスト：margin-top:30px */
+    #topInfo {
+      margin-top: 25px;
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    /* 地図: 320×320px, margin-top:30px, 薄いグレー枠 */
+    #map {
+      margin-top: 15px;
+      width: 320px;
+      height: 320px;
+      border: 1px solid #ccc;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .leaflet-tile-pane {
+      filter: brightness(0.8);
+    }
+
+    /* 下部情報（任意） */
+    #info {
+      font-size: 12px;
+      padding: 4px;
+      text-align: center;
+    }
+    /* 電車アイコン：train-front-fill、サイズ小さめ、枠線なし、回転指定なし */
+    .rotated-train {
+      font-size: 20px !important;
+      display: inline-block;
+      border: none !important;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <!-- 上部テキスト -->
+    <div id="topInfo"></div>
+    <!-- 地図表示 -->
+    <div id="map"></div>
+    <!-- 下部補足情報（任意） -->
+    <div id="info"></div>
+  </div>
+  
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script>
+    // ------------------------------
+    // 1. 各セグメントの座標定義
+    // ------------------------------
+    // セグメントA: 台北〜高雄（正確な座標）
+    const segmentA = [
+      [25.0478, 121.5319],  // 台北駅
+      [25.0143, 121.4637],  // 板橋駅
+      [24.9896, 121.3133],  // 桃園駅
+      [24.8016, 120.9714],  // 新竹駅
+      [24.1368, 120.6853],  // 台中駅
+      [24.0726, 120.5423],  // 彰化駅
+      [23.4793, 120.4417],  // 嘉義駅
+      [22.9971, 120.2124],  // 台南駅
+      [22.6394, 120.3020]   // 高雄駅
+    ];
+    
+    // セグメントB: 高雄〜台東（正確な座標）
+    const segmentB = [
+      [22.6394, 120.3020],  // 高雄駅
+      [22.6731, 120.4880],  // 屏東駅
+      [22.2605, 120.5928],  // 枋寮駅
+      [22.5383, 120.9939],  // 太麻里駅
+      [22.7101, 121.0255],  // 知本駅
+      [22.7856, 121.1165]   // 台東駅
+    ];
+    
+    // Connector: 台東〜花蓮（直線接続）
+    const connector = [
+      [22.7856, 121.1165],  // 台東駅
+      [23.9760, 121.6050]   // 花蓮駅 (概算)
+    ];
+    
+    // セグメントC: 花蓮〜台北（簡略版6駅）
+    const segmentC = [
+      [24.0016, 121.6016],  // 花蓮駅
+      [24.7545, 121.7533],  // 宜蘭駅
+      [24.6765, 121.7690],  // 羅東駅
+      [25.1082, 121.8056],  // 瑞芳駅
+      [25.1283, 121.7392],  // 基隆駅
+      [25.0478, 121.5170]   // 台北駅
+    ];
+    
+    // ------------------------------
+    // 2. 完全な台湾一周ルートの組み立て
+    // ルート = セグメントA + セグメントB（先頭除去） + Connector（先頭除去） + セグメントC（先頭除去）
+    // ------------------------------
+    const fullRoute = segmentA
+      .concat(segmentB.slice(1))
+      .concat(connector.slice(1))
+      .concat(segmentC.slice(1));
+    
+    // ------------------------------
+    // 3. 全ルート長を計算する関数
+    // ------------------------------
+    function toRad(deg) {
+      return deg * Math.PI / 180;
+    }
+    function haversine(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a = Math.sin(dLat/2)**2 +
+                Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*
+                Math.sin(dLon/2)**2;
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
+    function getRouteLength(route) {
+      let length = 0;
+      for (let i = 0; i < route.length - 1; i++) {
+        length += haversine(route[i][0], route[i][1], route[i+1][0], route[i+1][1]);
+      }
+      return length;
+    }
+    
+    // ------------------------------
+    // 4. ルート上の位置を算出する関数（回転は不要なのでベアリングは算出しない）
+    // ------------------------------
+    function getPointAlongRoute(route, fraction) {
+      const total = getRouteLength(route);
+      const target = fraction * total;
+      let cumulative = 0;
+      for (let i = 0; i < route.length - 1; i++) {
+        const d = haversine(route[i][0], route[i][1], route[i+1][0], route[i+1][1]);
+        if (cumulative + d >= target) {
+          const t = (target - cumulative) / d;
+          const lat = route[i][0] + t * (route[i+1][0] - route[i][0]);
+          const lon = route[i][1] + t * (route[i+1][1] - route[i][1]);
+          return { lat, lon };
+        }
+        cumulative += d;
+      }
+      return { lat: route[route.length - 1][0], lon: route[route.length - 1][1] };
+    }
+    
+    // ------------------------------
+    // 5. トレーニング量から走行距離を計算（1kg=0.001km）
+    // ------------------------------
+    function calculateTotalVolume() {
+      const records = JSON.parse(localStorage.getItem("trainingRecords")) || [];
+      let total = 0;
+      records.forEach(record => {
+        if (record.exercises && Array.isArray(record.exercises)) {
+          record.exercises.forEach(ex => {
+            const w = parseFloat(ex.weight) || 0;
+            const r = parseFloat(ex.reps)   || 0;
+            const s = parseFloat(ex.sets)   || 0;
+            total += w * r * s;
+          });
+        }
+      });
+      return total;
+    }
+    function calculateDistance(volumeKg) {
+      return volumeKg * 0.001;
+    }
+    const baseVolume = calculateTotalVolume();
+    const trainingDistance = calculateDistance(baseVolume);
+    
+    // ------------------------------
+    // 6. 全ルート長と進行割合の計算
+    // ------------------------------
+    const routeLength = getRouteLength(fullRoute);
+    const rawFraction = trainingDistance / routeLength;
+    const cycle = Math.floor(rawFraction);  // 何周目か（0-indexed）
+    const localFraction = rawFraction - cycle; // 1周内の進行率 (0～1)
+    
+    // ------------------------------
+    // 7. 上部テキスト生成
+    // 「現在、X周目、台北からYkmです。加油！」
+    // Yは、localFraction * routeLength（km）
+    // ------------------------------
+    const currentCycle = cycle + 1;
+    const lapDistance = localFraction * routeLength;
+    const topText = `現在、${currentCycle}周目、台北から${lapDistance.toFixed(2)}kmです。加油！`;
+    
+    // ------------------------------
+    // 8. ルート上の現在位置を算出
+    // ------------------------------
+    const trainState = getPointAlongRoute(fullRoute, localFraction);
+    
+    // ------------------------------
+    // 9. DOM読み込み後に地図描画
+    // ------------------------------
+    document.addEventListener("DOMContentLoaded", function() {
+      // 上部テキスト表示
+      const topInfoElem = document.getElementById('topInfo');
+      topInfoElem.innerHTML = `<div class="trip-info">${topText}</div>`;
+      
+      // 地図作成
+      const map = L.map('map', { zoomControl: false, attributionControl: false });
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+      // ポリライン描画：白色2px線
+      const polyline = L.polyline(fullRoute, {
+        color: '#ffffff',
+        weight: 1,
+        opacity: 1
+      }).addTo(map);
+      // できるだけ島全体が拡大表示されるよう、paddingを小さく設定
+      map.fitBounds(polyline.getBounds(), { padding: [2, 2] });
+      
+      // 電車アイコン：train-front-fill、回転なし、色は白
+      const trainHtml = `
+        <i class="bi bi-train-front-fill rotated-train"
+           style="color:#fff;">
+        </i>
+      `;
+      const trainIcon = L.divIcon({
+        html: trainHtml,
+        className: '',
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
+      });
+      L.marker([trainState.lat, trainState.lon], { icon: trainIcon }).addTo(map);
+      
+    });
+  </script>
+</body>
+</html>

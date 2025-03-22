@@ -11,51 +11,76 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
 document.addEventListener("DOMContentLoaded", function () {
-  // --------------------------------
-  // 基本の年月情報
-  // --------------------------------
+  // ====================================================
+  // [共通] 東京と台湾の座標
+  // ====================================================
+  const tokyo = [35.7, 139.7];
+  const taiwan = [23.7, 121.0];
+
+  // ====================================================
+  // [1] Calendar & Modal 関連の処理
+  // ====================================================
+
   let currentYear = new Date().getFullYear();
   let currentMonth = new Date().getMonth() + 1; // 1～12
 
-  // --------------------------------
-  // ヘルパー関数
-  // --------------------------------
   function zeroPad(num) {
     return String(num).padStart(2, "0");
   }
 
-  // localStorage から記録を取得
   function getRecords() {
     return JSON.parse(localStorage.getItem("trainingRecords")) || [];
   }
 
-  // localStorage に記録を保存
   function saveRecords(records) {
     localStorage.setItem("trainingRecords", JSON.stringify(records));
   }
 
+  // ===== 新規追加：総合トレーニングボリューム計算 =====
+  function calculateTotalVolume() {
+    const records = getRecords();
+    let total = 0;
+    records.forEach(record => {
+      if (record.exercises && Array.isArray(record.exercises)) {
+        record.exercises.forEach(ex => {
+          // 数値変換できなければ 0 に
+          const weight = parseFloat(ex.weight) || 0;
+          const reps   = parseFloat(ex.reps)   || 0;
+          const sets   = parseFloat(ex.sets)   || 0;
+          total += weight * reps * sets;
+        });
+      }
+    });
+    return total;
+  }
+
+  function updateTotalVolume() {
+    const totalVolumeElem = document.getElementById("totalVolume");
+    if (totalVolumeElem) {
+      totalVolumeElem.textContent = "総合トレーニングボリューム: " + calculateTotalVolume();
+    }
+  }
+  // ===== ここまで =====
+
   /**
    * 指定した dateStr (YYYY-MM-DD) より過去で、
    * bodyPart === part のうち最も近い日付のレコードを返す
-   * 見つからなければ null
    */
   function getNearestRecord(dateStr, part) {
     if (!part) return null;
-    const currentDate = new Date(dateStr); // 例: "2025-03-08"
+    const currentDate = new Date(dateStr);
     const records = getRecords();
-    // 指定部位かつ、日付が過去のレコードのみ抽出
     const filtered = records.filter(r => {
       if (!r.bodyPart || r.bodyPart !== part) return false;
       const rDate = new Date(r.date);
       return rDate < currentDate;
     });
     if (filtered.length === 0) return null;
-    // 日付が近い順に降順ソート（最新の過去レコードを先頭に）
+    // 日付が近い順に降順ソート
     filtered.sort((a, b) => (a.date < b.date ? 1 : (a.date > b.date ? -1 : 0)));
     return filtered[0] || null;
   }
 
-  // ▼ <YYYY年M月> 形式で表示 (HTML側は id="monthDisplay")
   function updateMonthDisplay() {
     const md = document.getElementById("monthDisplay");
     if (md) {
@@ -63,78 +88,70 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ▼ 部位（上半身・下半身）の選択値を返す関数（プルダウンに対応）
   function getSelectedBodyPart() {
     const select = document.getElementById("bodyPartSelect");
     return select ? select.value : "";
   }
 
-  // --------------------------------
-  // カレンダー生成（index.html 用）
-  // --------------------------------
   function generateCalendar(year, month) {
     const calendarContainer = document.querySelector(".calendar");
     if (!calendarContainer) return;
     calendarContainer.innerHTML = "";
-  
+
     const allRecords = getRecords();
-  
-    // 曜日ヘッダー（月曜始まり）
+
+    // 曜日ヘッダー
     const weekdays = ["月", "火", "水", "木", "金", "土", "日"];
     const headerRow = document.createElement("div");
     headerRow.classList.add("calendar-header");
     headerRow.style.display = "grid";
     headerRow.style.gridTemplateColumns = "repeat(7, 1fr)";
-    weekdays.forEach((day) => {
+    weekdays.forEach(day => {
       const headerCell = document.createElement("div");
       headerCell.classList.add("header-cell");
       headerCell.textContent = day;
       headerRow.appendChild(headerCell);
     });
     calendarContainer.appendChild(headerRow);
-  
+
     // カレンダーグリッド
     const calendarGrid = document.createElement("div");
     calendarGrid.classList.add("calendar-grid");
     calendarGrid.style.display = "grid";
     calendarGrid.style.gridTemplateColumns = "repeat(7, 1fr)";
-  
+
     const firstDay = new Date(year, month - 1, 1);
     const lastDate = new Date(year, month, 0).getDate();
-    let startDay = firstDay.getDay(); // 0 = 日曜, 6 = 土曜
+    let startDay = firstDay.getDay();
     if (startDay === 0) startDay = 7;
     const offset = startDay - 1;
-  
-    // 前月分の空白セル
+
+    // 前月分の空セル
     for (let i = 0; i < offset; i++) {
       const emptyCell = document.createElement("div");
       emptyCell.classList.add("calendar-day", "empty-day");
       calendarGrid.appendChild(emptyCell);
     }
-  
+
     // 当月のセル
     for (let date = 1; date <= lastDate; date++) {
       const cell = document.createElement("div");
       cell.classList.add("calendar-day");
-  
-      // 日付表示
+
       const dayInfo = document.createElement("div");
       dayInfo.classList.add("day-info");
       dayInfo.textContent = date;
       cell.appendChild(dayInfo);
-  
-      // localStorage から該当日の記録取得
+
       const dateKey = `${year}-${zeroPad(month)}-${zeroPad(date)}`;
-      const foundRecord = allRecords.find((r) => r.date === dateKey);
+      const foundRecord = allRecords.find(r => r.date === dateKey);
       if (foundRecord) {
         const summaryDiv = document.createElement("div");
         summaryDiv.classList.add("day-summary");
-        summaryDiv.textContent =
-          foundRecord.bodyPart === "upper" ? "上半身" : "下半身";
+        summaryDiv.textContent = (foundRecord.bodyPart === "upper") ? "上半身" : "下半身";
         cell.appendChild(summaryDiv);
       }
-  
-      // 編集ボタン
+
       const recordButton = document.createElement("button");
       recordButton.classList.add("edit-button", "btn", "btn-sm");
       recordButton.innerHTML = '<i class="bi bi-pencil"></i>';
@@ -142,11 +159,11 @@ document.addEventListener("DOMContentLoaded", function () {
         openModalForDate(year, month, date);
       });
       cell.appendChild(recordButton);
-  
+
       calendarGrid.appendChild(cell);
     }
-  
-    // 末尾に trailing empty cells を追加してグリッドを整える
+
+    // 末尾の空セル
     const totalCells = offset + lastDate;
     const remainder = totalCells % 7;
     if (remainder > 0) {
@@ -157,146 +174,88 @@ document.addEventListener("DOMContentLoaded", function () {
         calendarGrid.appendChild(emptyCell);
       }
     }
-  
     calendarContainer.appendChild(calendarGrid);
   }
-  
-  // --------------------------------
-  // モーダルを開く（index.html 用）
-  // --------------------------------
+
   function openModalForDate(year, month, day) {
     const formattedDate = `${year}-${zeroPad(month)}-${zeroPad(day)}`;
-    
-    // モーダルヘッダーのタイトルを設定
     const modalTitle = document.getElementById("dayModalLabel");
-    if (modalTitle) {
-      modalTitle.textContent = `${formattedDate}のログ`;
-    }
-    
-    // 隠しフィールドに日付を設定
+    if (modalTitle) modalTitle.textContent = `${formattedDate}のログ`;
     const modalDateInput = document.getElementById("modal-date");
-    if (modalDateInput) {
-      modalDateInput.value = formattedDate;
-    }
-    
-    // フォームの初期化
+    if (modalDateInput) modalDateInput.value = formattedDate;
+
     const exerciseContainer = document.getElementById("exercise-container");
-    if (exerciseContainer) {
-      exerciseContainer.innerHTML = "";
-    }
+    if (exerciseContainer) exerciseContainer.innerHTML = "";
     const bodyPartSelect = document.getElementById("bodyPartSelect");
-    if (bodyPartSelect) {
-      bodyPartSelect.value = "";
-    }
+    if (bodyPartSelect) bodyPartSelect.value = "";
     const memoElem = document.getElementById("modalMemo");
-    if (memoElem) {
-      memoElem.value = "";
-    }
-    
-    // 既存レコードのチェック
+    if (memoElem) memoElem.value = "";
+
     const records = getRecords();
-    const recordIndex = records.findIndex((r) => r.date === formattedDate);
+    const recordIndex = records.findIndex(r => r.date === formattedDate);
     const record = records[recordIndex] || null;
-    
+
     if (record) {
-      // 既存レコードがある場合はその内容をロード
-      if (bodyPartSelect) {
-        bodyPartSelect.value = record.bodyPart;
-      }
-      record.exercises.forEach((ex) => {
+      if (bodyPartSelect) bodyPartSelect.value = record.bodyPart;
+      record.exercises.forEach(ex => {
         addExerciseRow(ex.name, ex.weight, ex.reps, ex.sets);
       });
-      if (memoElem) {
-        memoElem.value = record.memo || "";
-      }
+      if (memoElem) memoElem.value = record.memo || "";
       const deleteButton = document.getElementById("deleteRecordButton");
       if (deleteButton) {
         deleteButton.disabled = false;
-        deleteButton.onclick = () => {
-          deleteRecord(recordIndex);
-        };
+        deleteButton.onclick = () => { deleteRecord(recordIndex); };
       }
     } else {
-      // 新規の場合は削除ボタンは無効化
       const deleteButton = document.getElementById("deleteRecordButton");
       if (deleteButton) {
         deleteButton.disabled = true;
         deleteButton.onclick = null;
       }
-      
-      // ここで、新規の場合のみ、部位が選択された際に近いレコードをロードするための処理を追加
       if (bodyPartSelect) {
-        // 一度以前の change イベントリスナーを削除（念のため）
         bodyPartSelect.onchange = null;
         bodyPartSelect.addEventListener("change", function onBodyPartChange() {
           const selectedPart = bodyPartSelect.value;
           if (!selectedPart) return;
-          // 既存レコードがない場合のみ実行
           if (!record) {
             const nearest = getNearestRecord(formattedDate, selectedPart);
-            if (nearest) {
-              // 近い記録が見つかった場合、exerciseContainer をクリアしてその種目をロード
-              if (exerciseContainer) {
-                exerciseContainer.innerHTML = "";
-                nearest.exercises.forEach((ex) => {
-                  addExerciseRow(ex.name, ex.weight, ex.reps, ex.sets);
-                });
-              }
-              // メモ欄もコピーしたい場合は下記コメントアウトを外す
-              // if (memoElem) {
-              //   memoElem.value = nearest.memo || "";
-              // }
-            } else {
-              // 近い記録がなければ、固定種目を表示する（必要に応じて）
-              setFixedExercises();
+            if (nearest && exerciseContainer) {
+              exerciseContainer.innerHTML = "";
+              nearest.exercises.forEach(ex => {
+                addExerciseRow(ex.name, ex.weight, ex.reps, ex.sets);
+              });
             }
           }
         });
       }
     }
-    
-    // モーダル表示（Bootstrap のメソッド）
     $("#dayModal").modal("show");
-    
-    // モーダルが表示された直後に bodyPartSelect にフォーカスを移動
     $("#dayModal").on("shown.bs.modal", function () {
-      if (bodyPartSelect) {
-        bodyPartSelect.focus();
-      }
+      if (bodyPartSelect) bodyPartSelect.focus();
     });
   }
-  
-  // モーダルが閉じられた直後にカレンダーの「monthLeft」ボタンにフォーカスを戻す
+
   $("#dayModal").on("hidden.bs.modal", function () {
     const monthLeft = document.getElementById("monthLeft");
-    if (monthLeft) {
-      monthLeft.focus();
-    }
+    if (monthLeft) monthLeft.focus();
   });
-  
-  // --------------------------------
-  // 記録削除
-  // --------------------------------
+
   function deleteRecord(index) {
     let records = getRecords();
     records.splice(index, 1);
     saveRecords(records);
-    if (typeof $ === "function" && $("#dayModal").modal) {
-      $("#dayModal").modal("hide");
-    }
+    $("#dayModal").modal("hide");
     generateCalendar(currentYear, currentMonth);
+    updateTotalVolume(); // 削除後に総合計更新
   }
-  
-  // --------------------------------
-  // 種目入力フォーム追加
-  // --------------------------------
+
   function addExerciseRow(name = "", weight = "", reps = "", sets = "") {
     const container = document.getElementById("exercise-container");
     if (!container) return;
     const row = document.createElement("div");
     row.classList.add("exercise-row");
-  
-    // 1) 種目
+
+    // 種目
     const nameCol = document.createElement("div");
     const nameInput = document.createElement("input");
     nameInput.type = "text";
@@ -305,8 +264,8 @@ document.addEventListener("DOMContentLoaded", function () {
     nameInput.value = name;
     nameCol.appendChild(nameInput);
     row.appendChild(nameCol);
-  
-    // 2) 負荷 (kg)
+
+    // 負荷 (kg)
     const weightCol = document.createElement("div");
     const weightInput = document.createElement("input");
     weightInput.type = "number";
@@ -315,8 +274,8 @@ document.addEventListener("DOMContentLoaded", function () {
     weightInput.value = weight;
     weightCol.appendChild(weightInput);
     row.appendChild(weightCol);
-  
-    // 3) 回数 (回)
+
+    // 回数 (回)
     const repsCol = document.createElement("div");
     const repsInput = document.createElement("input");
     repsInput.type = "number";
@@ -325,8 +284,8 @@ document.addEventListener("DOMContentLoaded", function () {
     repsInput.value = reps;
     repsCol.appendChild(repsInput);
     row.appendChild(repsCol);
-  
-    // 4) セット数 (set)
+
+    // セット数 (set)
     const setsCol = document.createElement("div");
     const setsInput = document.createElement("input");
     setsInput.type = "number";
@@ -335,25 +294,20 @@ document.addEventListener("DOMContentLoaded", function () {
     setsInput.value = sets;
     setsCol.appendChild(setsInput);
     row.appendChild(setsCol);
-  
-    // 5) ゴミ箱ボタン（アイコン：x-circle-fill）
+
+    // ゴミ箱ボタン
     const delCol = document.createElement("div");
     const delButton = document.createElement("button");
     delButton.type = "button";
     delButton.classList.add("btn", "custom-btn2");
     delButton.innerHTML = '<i class="bi bi-x-circle-fill"></i>';
-    delButton.onclick = () => {
-      row.remove();
-    };
+    delButton.onclick = () => { row.remove(); };
     delCol.appendChild(delButton);
     row.appendChild(delCol);
-  
+
     container.appendChild(row);
   }
-  
-  // --------------------------------
-  // モーダル保存処理
-  // --------------------------------
+
   const saveModalButton = document.getElementById("saveModalButton");
   if (saveModalButton) {
     saveModalButton.addEventListener("click", () => {
@@ -361,89 +315,67 @@ document.addEventListener("DOMContentLoaded", function () {
       const bodyPart = getSelectedBodyPart();
       const exerciseRows = document.querySelectorAll(".exercise-row");
       let exercises = [];
-  
-      exerciseRows.forEach((row) => {
-        const name = row.querySelector(".exercise-name") ? row.querySelector(".exercise-name").value : "";
-        const weight = row.querySelector(".exercise-weight") ? row.querySelector(".exercise-weight").value : "";
-        const reps = row.querySelector(".exercise-reps") ? row.querySelector(".exercise-reps").value : "";
-        const sets = row.querySelector(".exercise-sets") ? row.querySelector(".exercise-sets").value : "";
+
+      exerciseRows.forEach(row => {
+        const name = row.querySelector(".exercise-name")?.value || "";
+        const weight = row.querySelector(".exercise-weight")?.value || "";
+        const reps = row.querySelector(".exercise-reps")?.value || "";
+        const sets = row.querySelector(".exercise-sets")?.value || "";
         if (name.trim() !== "" || weight !== "" || reps !== "" || sets !== "") {
           exercises.push({ name, weight, reps, sets });
         }
       });
-  
+
       const memoElem = document.getElementById("modalMemo");
       const memo = memoElem ? memoElem.value : "";
       let records = getRecords();
-      const recordIndex = records.findIndex((r) => r.date === modalDate);
+      const recordIndex = records.findIndex(r => r.date === modalDate);
       const newRecord = { date: modalDate, bodyPart, exercises, memo };
-  
+
       if (recordIndex >= 0) {
         records[recordIndex] = newRecord;
       } else {
         records.push(newRecord);
       }
-  
+
       saveRecords(records);
-      if (typeof $ === "function" && $("#dayModal").modal) {
-        $("#dayModal").modal("hide");
-      }
+      $("#dayModal").modal("hide");
       generateCalendar(currentYear, currentMonth);
-  
-      // モーダル保存と同時に自動バックアップ
+      updateTotalVolume(); // 保存後に総合計更新
+
       backupToFirestore();
     });
   }
-  
-  // --------------------------------
-  // 種目追加ボタンのイベント
-  // --------------------------------
+
   const addExerciseBtn = document.getElementById("add-exercise");
   if (addExerciseBtn) {
-    addExerciseBtn.addEventListener("click", () => {
-      addExerciseRow();
-    });
+    addExerciseBtn.addEventListener("click", () => { addExerciseRow(); });
   }
-  
-  // --------------------------------
-  // 固定種目を自動表示する関数（部位プルダウンの change イベント対応）
-  // --------------------------------
+
   function setFixedExercises() {
     const exerciseContainer = document.getElementById("exercise-container");
     if (exerciseContainer) {
       exerciseContainer.innerHTML = "";
-      const selected = getSelectedBodyPart(); // "upper" or "lower"
+      const selected = getSelectedBodyPart();
       const fixedUpper = ["ラット", "アブ", "チェスト", "ロー", "トーソ"];
       const fixedLower = ["プレス", "カール", "エクス", "アブ", "アダ"];
       if (selected === "upper") {
-        fixedUpper.forEach((exName) => {
-          addExerciseRow(exName, "", "", "");
-        });
+        fixedUpper.forEach(exName => { addExerciseRow(exName, "", "", ""); });
       } else if (selected === "lower") {
-        fixedLower.forEach((exName) => {
-          addExerciseRow(exName, "", "", "");
-        });
+        fixedLower.forEach(exName => { addExerciseRow(exName, "", "", ""); });
       }
     }
   }
-  
-  // --------------------------------
-  // 部位プルダウンの change イベント設定（※通常の固定種目用）
-  // --------------------------------
+
   const bodyPartSelectGlobal = document.getElementById("bodyPartSelect");
   if (bodyPartSelectGlobal) {
     bodyPartSelectGlobal.addEventListener("change", setFixedExercises);
   }
-  
-  // --------------------------------
-  // 初期表示（カレンダー生成など、index.html 用）
-  // --------------------------------
+
   updateMonthDisplay();
   generateCalendar(currentYear, currentMonth);
-  
-  // --------------------------------
-  // 月移動イベント (< と >)（index.html 用）
-  // --------------------------------
+  updateTotalVolume(); // ページ読み込み時に総合計表示
+
   const monthLeft = document.getElementById("monthLeft");
   if (monthLeft) {
     monthLeft.addEventListener("click", () => {
@@ -468,10 +400,8 @@ document.addEventListener("DOMContentLoaded", function () {
       generateCalendar(currentYear, currentMonth);
     });
   }
-  
-  // --------------------------------
-  // Firestore 自動バックアップ関連（保存時のみ実行）
-  // --------------------------------
+
+  // Firestore リストア & バックアップ
   async function restoreFromFirestore() {
     try {
       const backupsCol = collection(window.db, "backups");
@@ -482,13 +412,12 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
       let backupData;
-      querySnapshot.forEach((docSnap) => {
-        backupData = docSnap.data();
-      });
+      querySnapshot.forEach(docSnap => { backupData = docSnap.data(); });
       if (backupData && backupData.records) {
         localStorage.setItem("trainingRecords", JSON.stringify(backupData.records));
         alert("Firestoreからのリストアが完了しました。");
         generateCalendar(currentYear, currentMonth);
+        updateTotalVolume(); // リストア後に総合計更新
       } else {
         alert("バックアップデータの形式が不正です。");
       }
@@ -497,20 +426,16 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Firestoreからのリストアに失敗しました。");
     }
   }
-  
+
   const restoreIcon = document.getElementById("restoreIcon");
   if (restoreIcon) {
-    restoreIcon.addEventListener("click", () => {
-      restoreFromFirestore();
-    });
+    restoreIcon.addEventListener("click", () => { restoreFromFirestore(); });
   }
   const backupIcon = document.getElementById("backupIcon");
   if (backupIcon) {
-    backupIcon.addEventListener("click", () => {
-      backupToFirestore();
-    });
+    backupIcon.addEventListener("click", () => { backupToFirestore(); });
   }
-  
+
   function backupToFirestore() {
     const trainingRecords = JSON.parse(localStorage.getItem("trainingRecords")) || [];
     const date = new Date();
@@ -520,50 +445,144 @@ document.addEventListener("DOMContentLoaded", function () {
       records: trainingRecords,
       timestamp: serverTimestamp()
     })
-      .then(() => {
-        console.log("Firestore へのバックアップ成功");
-      })
-      .catch((error) => {
-        console.error("Firestore へのバックアップエラー:", error);
-      });
+      .then(() => { console.log("Firestore へのバックアップ成功"); })
+      .catch(error => { console.error("Firestore へのバックアップエラー:", error); });
   }
-  
-  // --------------------------------
-  // メモ一覧表示用の処理（memo.html 用）
-  // --------------------------------
+
+  // メモ一覧表示（memo.html 用）
   function displayMemos() {
     const records = JSON.parse(localStorage.getItem("trainingRecords")) || [];
     const memos = records.filter(record => record.memo && record.memo.trim() !== "");
     memos.sort((a, b) => (a.date < b.date ? 1 : (a.date > b.date ? -1 : 0)));
-  
     const memoList = document.getElementById("memoList");
     if (!memoList) return;
-  
+
     if (memos.length === 0) {
       memoList.innerHTML = "<p>メモはありません。</p>";
       return;
     }
-  
+
     memos.forEach(record => {
       const container = document.createElement("div");
       container.className = "memo-entry mb-3";
-  
       const dateElem = document.createElement("h5");
       dateElem.textContent = record.date;
       container.appendChild(dateElem);
-  
       const memoElem = document.createElement("p");
       memoElem.textContent = record.memo;
       container.appendChild(memoElem);
-  
       const hr = document.createElement("hr");
       container.appendChild(hr);
-  
       memoList.appendChild(container);
     });
   }
-  
   if (document.getElementById("memoList")) {
     displayMemos();
   }
+
+  // ====================================================
+  // [2] Map & Flight Animation 関連の処理 (noWrap)
+  // ====================================================
+  const mapElement = document.getElementById("map");
+  if (mapElement) {
+    const map = L.map('map');
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+      noWrap: true,
+      bounds: L.latLngBounds([[-85, -180], [85, 180]])
+    }).addTo(map);
+
+    map.setMaxBounds([[-85, -180], [85, 180]]);
+    const mapBounds = L.latLngBounds([tokyo, taiwan]);
+    map.fitBounds(mapBounds, { padding: [20, 20] });
+    map.whenReady(() => { map.invalidateSize(); });
+    L.polyline([tokyo, taiwan], {
+      color: '#FFFFFF',
+      weight: 1
+    }).addTo(map);
+
+    const planeDiv = document.createElement('div');
+    planeDiv.innerHTML = '<i class="bi bi-airplane-fill plane-icon"></i>';
+    const planeIcon = L.divIcon({
+      html: planeDiv,
+      className: '',
+      iconSize: [32, 32]
+    });
+
+    let airplaneMarker = L.marker(tokyo, { icon: planeIcon }).addTo(map);
+    let step = 0;
+    let direction = 1;
+    const totalSteps = 200;
+    const interval = 50;
+    const latDiff = (taiwan[0] - tokyo[0]) / totalSteps;
+    const lngDiff = (taiwan[1] - tokyo[1]) / totalSteps;
+    let prevLat = tokyo[0];
+    let prevLng = tokyo[1];
+
+    function getAngleDeg(lat1, lng1, lat2, lng2) {
+      const rad2deg = 180 / Math.PI;
+      let angle = Math.atan2((lng2 - lng1), (lat2 - lat1)) * rad2deg;
+      angle = -angle + 90;
+      return angle;
+    }
+
+    function animatePlane() {
+      step += direction;
+      if (step >= totalSteps) {
+        step = totalSteps;
+        direction = -1;
+      } else if (step <= 0) {
+        step = 0;
+        direction = 1;
+      }
+      const currentLat = tokyo[0] + latDiff * step;
+      const currentLng = tokyo[1] + lngDiff * step;
+      airplaneMarker.setLatLng([currentLat, currentLng]);
+
+      const angle = getAngleDeg(prevLat, prevLng, currentLat, currentLng);
+      const iconElem = planeDiv.querySelector('.plane-icon');
+      if (iconElem) {
+        iconElem.style.transform = `rotate(${angle}deg)`;
+      }
+      prevLat = currentLat;
+      prevLng = currentLng;
+    }
+    setInterval(animatePlane, interval);
+  }
 });
+
+// 総合トレーニングボリューム（kg換算）の合計を計算する関数
+function calculateTotalVolume() {
+  const records = getRecords();
+  let total = 0;
+  records.forEach(record => {
+    if (record.exercises && Array.isArray(record.exercises)) {
+      record.exercises.forEach(ex => {
+        // 数値変換できなければ 0 に
+        const weight = parseFloat(ex.weight) || 0;
+        const reps   = parseFloat(ex.reps)   || 0;
+        const sets   = parseFloat(ex.sets)   || 0;
+        total += weight * reps * sets;
+      });
+    }
+  });
+  return total;
+}
+
+// 総合トレーニングボリュームを元に換算した距離(km)を計算する関数
+function calculateDistance() {
+  // 0.01km = 1kg と換算
+  return calculateTotalVolume() * 0.01;
+}
+
+// 表示エリアに「総合トレーニングボリューム」と換算距離を更新する関数
+function updateTotalVolume() {
+  const totalVolumeElem = document.getElementById("totalVolume");
+  if (totalVolumeElem) {
+    const totalVolume = calculateTotalVolume();
+    const distance = calculateDistance().toFixed(2); // 小数点以下2桁で表示
+    totalVolumeElem.textContent = 
+      "総合トレーニングボリューム: " + totalVolume + 
+      "  (距離換算: " + distance + "km 進みました)";
+  }
+}
