@@ -471,26 +471,39 @@ document.addEventListener("DOMContentLoaded", function () {
     memos.sort((a, b) => (a.date < b.date ? 1 : (a.date > b.date ? -1 : 0)));
     const memoList = document.getElementById("memoList");
     if (!memoList) return;
-
+  
     if (memos.length === 0) {
       memoList.innerHTML = "<p>メモはありません。</p>";
       return;
     }
-
+  
+    // 曜日の配列。getDay() は0:日～6:土なので対応
+    const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+  
     memos.forEach(record => {
       const container = document.createElement("div");
       container.className = "memo-entry mb-3";
       const dateElem = document.createElement("h5");
-      dateElem.textContent = record.date;
+      
+      // record.date は "YYYY-MM-DD" の形式なので、new Date() に渡して曜日を取得
+      const dateObj = new Date(record.date);
+      const weekday = weekdays[dateObj.getDay()];
+      
+      // 年月日に加えて曜日を(X)形式で表示する
+      dateElem.textContent = `${record.date} (${weekday})`;
       container.appendChild(dateElem);
+      
       const memoElem = document.createElement("p");
       memoElem.textContent = record.memo;
       container.appendChild(memoElem);
+      
       const hr = document.createElement("hr");
       container.appendChild(hr);
+      
       memoList.appendChild(container);
     });
   }
+  
   if (document.getElementById("memoList")) {
     displayMemos();
   }
