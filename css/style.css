@@ -9,6 +9,8 @@
 =============================== */
 body {
   font-family: 'Noto Sans JP', sans-serif !important;
+  margin: 0;
+  padding: 0;
 }
 #main-header.container,
 main.container {
