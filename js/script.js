@@ -137,10 +137,17 @@ document.addEventListener("DOMContentLoaded", function () {
     for (let date = 1; date <= lastDate; date++) {
       const cell = document.createElement("div");
       cell.classList.add("calendar-day");
-
+    
       const dayInfo = document.createElement("div");
       dayInfo.classList.add("day-info");
       dayInfo.textContent = date;
+    
+      // 今日の日付と一致するかをチェックして "today" クラスを追加
+      const currentCellDate = `${year}-${zeroPad(month)}-${zeroPad(date)}`;
+      if (currentCellDate === getTodayString()) {
+        dayInfo.classList.add("today");
+      }
+    
       cell.appendChild(dayInfo);
 
       const dateKey = `${year}-${zeroPad(month)}-${zeroPad(date)}`;
@@ -176,6 +183,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     calendarContainer.appendChild(calendarGrid);
   }
+
+  function getTodayString() {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, "0");
+    const dd = String(now.getDate()).padStart(2, "0");
+    return `${yyyy}-${mm}-${dd}`;
+  }  
 
   function openModalForDate(year, month, day) {
     const formattedDate = `${year}-${zeroPad(month)}-${zeroPad(day)}`;
@@ -479,4 +494,98 @@ document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("memoList")) {
     displayMemos();
   }
+
+  // ===============================
+// ここから象の画像クリックで吹き出し表示／非表示の処理を追加
+// ===============================
+const elephantImg = document.getElementById("elephantImg");
+const elephantBubble = document.getElementById("elephantBubble");
+
+if (elephantImg && elephantBubble) {
+  elephantImg.addEventListener("click", function() {
+    // 吹き出しのテキスト更新を呼び出す
+    updateSpeechBubble();
+
+    // 吹き出しが非表示なら表示、表示中なら非表示にする
+    if (elephantBubble.style.display === "none" || elephantBubble.style.display === "") {
+      elephantBubble.style.display = "block";
+    } else {
+      elephantBubble.style.display = "none";
+    }
+  });
+}
+
+// ===============================
+// ここから Gemini API 呼び出しと吹き出し更新の関数定義
+// ===============================
+
+// (A) 日付文字列を生成する関数
+function getTodayString() {
+  const now = new Date();
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth() + 1).padStart(2, "0");
+  const dd = String(now.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+// (B) hogehoge に日付を差し込むプロンプトを生成する関数
+function createPromptWithDate(dateStr) {
+  return `あなたはWikipediaマニアです。まず、${dateStr}が何の日か教えてください。書式は必ず'今日は「XXの日」だゾウ'にして、XXを含めて10文字以内で出力すること。ハッシュタグなどの他の記号は絶対に入れないこと。`;
+}
+
+// (C) Gemini API を呼び出す関数
+function Gemini(prompt) {
+  const apiKey = 'AIzaSyDkX0dNltJWjEJI8vQ-jMhWzM0SAEjOx94'; // ご自身のAPIキー
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+  const payload = {
+    contents: [
+      {
+        parts: [{ text: prompt }]
+      }
+    ]
+  };
+
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(resJson => {
+      if (resJson && resJson.candidates && resJson.candidates.length > 0) {
+        return resJson.candidates[0].content.parts[0].text;
+      } else {
+        console.error('回答が返されませんでした。');
+        return '不明';
+      }
+    })
+    .catch(error => {
+      console.error('Fetch error:', error);
+      return 'エラー';
+    });
+}
+
+// (D) 吹き出し更新用の関数
+function updateSpeechBubble() {
+  // 今日の日付を取得し、プロンプト生成
+  const todayStr = getTodayString();
+  const prompt = createPromptWithDate(todayStr);
+
+  // Gemini で結果を取得
+  Gemini(prompt).then(result => {
+    const bubbleElem = document.getElementById("elephantBubble");
+    if (bubbleElem) {
+      // 返ってきた結果をそのまま表示
+      bubbleElem.innerText = result;
+    }
+  });
+}
+
 });

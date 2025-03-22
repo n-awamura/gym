@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Gemini 関数の結果出力</title>
+</head>
+<body>
+  <h1>Gemini 関数の結果出力</h1>
+  <input type="text" id="promptInput" placeholder="ここにプロンプトを入力">
+  <button onclick="callGemini()">実行</button>
+  <div id="result"></div>
+
+  <script>
+    // Gemini関数：指定したプロンプトに対してAPIを呼び出します
+    function Gemini(prompt) {
+      const apiKey = 'AIzaSyDkX0dNltJWjEJI8vQ-jMhWzM0SAEjOx94'; // 正しいAPIキーを設定してください
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+      const payload = {
+        contents: [
+          {
+            parts: [{
+              text: prompt
+            }]
+          }
+        ]
+      };
+
+      return fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(resJson => {
+        if (resJson && resJson.candidates && resJson.candidates.length > 0) {
+          return resJson.candidates[0].content.parts[0].text;
+        } else {
+          console.error('回答が返されませんでした。');
+          return '回答が返されませんでした。';
+        }
+      })
+      .catch(error => {
+        console.error('Fetch error:', error);
+        return 'エラーが発生しました。';
+      });
+    }
+
+    // ボタンが押されたときに呼び出される関数
+    function callGemini() {
+      const promptText = document.getElementById('promptInput').value;
+      document.getElementById('result').innerText = '読み込み中...';
+      Gemini(promptText).then(result => {
+        document.getElementById('result').innerText = result;
+      });
+    }
+  </script>
+</body>
+</html>
