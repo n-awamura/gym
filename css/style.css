@@ -65,6 +65,51 @@ main.container {
   box-shadow: none !important;
 }
 
+/* 吹き出し本体 */
+.speech-bubble {
+  position: absolute;
+  left: 51px; 
+  top: 50%; 
+  transform: translateY(-50%); 
+  background-color: #fff;
+  color: #324454; /* 吹き出し内の文字色 */
+  font-size: 0.9rem;
+  border: 1px solid #526d82;
+  border-radius: 10px;
+  padding: 5px 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  display: none; /* 初期は非表示 */
+  z-index: 10;
+  white-space: nowrap; /* テキストを一行で表示 */
+}
+
+/* 三角形の矢印（外側の枠線部分） */
+.speech-bubble::before {
+  content: "";
+  position: absolute;
+  /* ↓ 本体より左に15pxずらす（元よりやや大きくずらす） */
+  left: -26px;             
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 12px;      /* 矢印の大きさ */
+  border-style: solid;
+  border-color: transparent #526d82 transparent transparent;
+}
+
+/* 三角形の矢印（内側の白い部分） */
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  /* ↓ 外側矢印の内側に重なるよう13pxに */
+  left: -20px;             
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 12px;
+  border-style: solid;
+  border-color: transparent #fff transparent transparent;
+}
+
+
 /* ===============================
    カレンダー
 =============================== */
@@ -133,6 +178,14 @@ main.container {
   font-size: 0.9rem;
   font-weight: bold;
 }
+
+.day-info.today {
+  border: 1px solid #526d82;
+  border-radius: 50%;
+  padding: 2px;
+  display: inline-block;
+}
+
 .day-summary {
   grid-row: 2;
   justify-self: center;
