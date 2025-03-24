@@ -569,7 +569,7 @@ const elephantImg = document.getElementById("elephantImg");
   }
 
   function createPromptWithDate(dateStr) {
-    return `あなたはWikipediaマニアです。まず、${dateStr}が何の日か教えてください。書式は必ず'今日は「XXの日」だゾウ！'にして、XXを含めて18文字以内で出力すること。ハッシュタグなどの他の記号は絶対に入れないこと。`;
+    return `あなたはWikipediaマニアです。${dateStr}が何の日か教えてください。書式は必ず'今日は「XXの日」だゾウ！'にして、XXを含めて18文字以内で出力すること。ハッシュタグなどの他の記号は絶対に入れないこと。`;
   }
 
   // 吹き出し更新用の関数
@@ -585,7 +585,7 @@ const elephantImg = document.getElementById("elephantImg");
     // 8秒後に吹き出しを自動で非表示にする
     setTimeout(() => {
       elephantBubble.classList.remove("visible");
-    }, 8000);
+    }, 6000);
 
     });
   }
