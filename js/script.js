@@ -505,7 +505,7 @@ const elephantImg = document.getElementById("elephantImg");
   }
   // Gemini API を呼び出す関数
   function Gemini(prompt) {
-    return fetch("https://callgemini-jzp4kcwnxa-uc.a.run.app", {
+    return fetch("https://gemini-proxy.fudaoxiang-gym.workers.dev", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt })
