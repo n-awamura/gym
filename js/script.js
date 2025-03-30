@@ -1,5 +1,4 @@
-import { GEMINI_API_KEY } from './config.js';
-import { db } from './js/firebase-config.js';
+import { db } from './firebase-config.js';
 import {
   collection,
   doc,
