@@ -506,37 +506,22 @@ const elephantImg = document.getElementById("elephantImg");
   }
   // Gemini API を呼び出す関数
   function Gemini(prompt) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
-    const payload = {
-      contents: [
-        {
-          parts: [{ text: prompt }]
-        }
-      ]
-    };
-
-    return fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+    return fetch("https://callgemini-jzp4kcwnxa-uc.a.run.app", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt })
     })
-      .then(response => {
-        if (!response.ok) throw new Error('Network response was not ok');
-        return response.json();
+      .then(res => {
+        if (!res.ok) throw new Error("Network error");
+        return res.json();
       })
-      .then(resJson => {
-        if (resJson && resJson.candidates && resJson.candidates.length > 0) {
-          return resJson.candidates[0].content.parts[0].text;
-        } else {
-          console.error('回答が返されませんでした。');
-          return '不明';
-        }
-      })
-      .catch(error => {
-        console.error('Fetch error:', error);
-        return 'エラー';
+      .then(data => data.result)
+      .catch(err => {
+        console.error("Gemini error:", err);
+        return "エラー";
       });
   }
+  
 
   function getTodayString() {
     const now = new Date();
