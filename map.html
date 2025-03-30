@@ -9,6 +9,24 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css">
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <!-- Firebase Config 読み込み -->
+<script type="module" src="js/firebase-config.js"></script>
+
+<!-- Firebase Auth チェック -->
+<script type="module">
+  import { auth } from './js/firebase-config.js';
+  import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js';
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      console.log("未ログインのため login.html にリダイレクトします");
+      window.location.href = "login.html";
+    } else {
+      console.log("認証済みのユーザー：", user.email || "匿名");
+    }
+  });
+</script>
+
   <style>
     body {
       margin: 0;

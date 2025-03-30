@@ -19,20 +19,23 @@
   <!-- 外部スタイルシート -->
   <link rel="stylesheet" href="css/style.css">
   <!-- Firebase SDK と設定を外部ファイルから読み込み -->
-  <script type="module" src="js/firebase-config.js"></script>
-  <!-- 認証状態チェック用のスクリプト -->
-  <script type="module">
-    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-    onAuthStateChanged(window.auth, (user) => {
-      console.log("onAuthStateChanged:", user);
-      if (!user) {
-        console.log("未認証のため、login.html へリダイレクトします");
-        window.location.href = "login.html";
-      } else {
-        console.log("認証済みのユーザーがいます。");
-      }
-    });
-  </script>
+<script type="module" src="js/firebase-config.js"></script>
+
+<!-- 認証状態チェック用のスクリプト -->
+<script type="module">
+  import { auth } from './js/firebase-config.js';
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+  onAuthStateChanged(auth, (user) => {
+    console.log("onAuthStateChanged:", user);
+    if (!user) {
+      console.log("未認証のため、login.html へリダイレクトします");
+      window.location.href = "login.html";
+    } else {
+      console.log("認証済みのユーザーがいます。");
+    }
+  });
+</script>
 </head>
 <body>
   <!-- ヘッダー -->
