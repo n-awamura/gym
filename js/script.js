@@ -8,7 +8,7 @@ import {
   query,
   orderBy,
   limit
-} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   const tokyo = [35.7, 139.7];
