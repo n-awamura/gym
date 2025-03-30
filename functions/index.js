@@ -5,15 +5,16 @@ const axios = require("axios");
 exports.callGemini = onRequest(async (req, res) => {
   logger.info("callGemini triggered");
 
+  // ✅ CORS対応（万全に）
   res.set("Access-Control-Allow-Origin", "*");
   res.set("Access-Control-Allow-Headers", "Content-Type");
+  res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
 
   if (req.method === "OPTIONS") {
     return res.status(204).send("");
   }
 
   const prompt = req.body.prompt;
-
   if (!prompt) {
     return res.status(400).json({error: "Prompt is required"});
   }
@@ -27,14 +28,15 @@ exports.callGemini = onRequest(async (req, res) => {
         },
     );
 
+    // ✅ 安全にレスポンスをパース
     let result = "不明";
     if (
       geminiRes.data &&
       geminiRes.data.candidates &&
-      geminiRes.data.candidates.length > 0 &&
+      geminiRes.data.candidates[0] &&
       geminiRes.data.candidates[0].content &&
       geminiRes.data.candidates[0].content.parts &&
-      geminiRes.data.candidates[0].content.parts.length > 0
+      geminiRes.data.candidates[0].content.parts[0]
     ) {
       result = geminiRes.data.candidates[0].content.parts[0].text;
     }
