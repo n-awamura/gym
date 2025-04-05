@@ -538,17 +538,24 @@ const elephantImg = document.getElementById("elephantImg");
   function updateSpeechBubble() {
     const todayStr = getTodayString();
     const prompt = createPromptWithDate(todayStr);
-
+  
     Gemini(prompt).then(result => {
-      // APIの結果が返ってきたら吹き出し内にテキストをセットし、表示状態にする
       elephantBubble.innerText = result;
+      
+      // レンダリング後に吹き出しの幅をチェックする
+      setTimeout(() => {
+        const iphoneSEWidth = 320; // iPhone SE の幅(px) ※必要に応じて調整してください
+        if (elephantBubble.scrollWidth > iphoneSEWidth) {
+          elephantBubble.classList.add("long");
+        } else {
+          elephantBubble.classList.remove("long");
+        }
+      }, 0);
+      
       elephantBubble.classList.add("visible");
-    
-    // 8秒後に吹き出しを自動で非表示にする
-    setTimeout(() => {
-      elephantBubble.classList.remove("visible");
-    }, 6000);
-
+      setTimeout(() => {
+        elephantBubble.classList.remove("visible");
+      }, 6000);
     });
-  }
+  }  
 });
