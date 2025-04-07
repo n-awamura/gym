@@ -112,14 +112,13 @@
   <div id="container">
     <!-- 上部テキスト (往路/復路情報) -->
     <div id="topInfo"></div>
-    <!-- アイコンコンテナ (上部テキストと地図の間) -->
-    <div id="iconContainer">      
-      <a href="map2.html">
-        <i class="bi bi-train-front-fill"></i>
-      </a>
+    <!-- 地図右上のアイコン -->
+    <div id="mapIcons" style="position: absolute; top: 48px; left: 10px; z-index: 1000;">
+      <i class="bi bi-arrow-left-short" style="color: #526d82; font-size: 20px;"></i>
+      <i class="bi bi-train-front-fill" style="color: #526d82; font-size: 20px;"></i>
     </div>
     <!-- 地図表示 -->
-    <div id="map"></div>
+    <div id="map" style="margin-top: 70px;"></div>
     <!-- 下部進捗情報 -->
     <div id="info"></div>
   </div>

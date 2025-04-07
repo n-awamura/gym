@@ -455,4 +455,24 @@ main.container {
   margin-top: 15px;
 }
 
-</style>
+/* ===============================
+   ページインジケーター (earth.html用)
+=============================== */
+.page-indicator {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.page-indicator .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin: 0 4px;
+  background-color: #bbb;
+  border-radius: 50%;
+  cursor: pointer; /* クリック可能であることを示すカーソル */
+}
+
+.page-indicator .dot.active {
+  background-color: #526d82; /* アクティブなドットの色 */
+}

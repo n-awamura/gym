@@ -1,18 +1,28 @@
-const {onRequest} = require("firebase-functions/v2/https");
-const logger = require("firebase-functions/logger");
+// v2ではなくv1を使用する
+const functions = require("firebase-functions");
+const express = require("express");
 const axios = require("axios");
+const cors = require("cors");
 
-exports.callGemini = onRequest(async (req, res) => {
-  logger.info("callGemini triggered");
+// ✅ CORSミドルウェアを追加（GitHub Pagesからのアクセス許可）
+const app = express();
+app.use(cors({origin: true})); // ← GitHub Pagesなどどこからでも許可
 
-  // ✅ CORS対応（万全に）
-  res.set("Access-Control-Allow-Origin", "*");
-  res.set("Access-Control-Allow-Headers", "Content-Type");
-  res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+app.use(express.json());
 
-  if (req.method === "OPTIONS") {
-    return res.status(204).send("");
-  }
+// ✅ 環境変数から Gemini APIキーを取得
+const geminiApiKey = functions.config().gemini.api_key;
+console.log("GEMINI_API_KEY:", geminiApiKey);
+
+// 確認用GET
+app.get("/", (req, res) => {
+  res.status(200).send("OK");
+});
+
+// POST: Gemini API 呼び出し
+// app.post 内を修正
+app.post("/", async (req, res) => {
+  console.info("callGemini triggered"); // ← logger.info → console.info に変更
 
   const prompt = req.body.prompt;
   if (!prompt) {
@@ -20,30 +30,32 @@ exports.callGemini = onRequest(async (req, res) => {
   }
 
   try {
-    const apiKey = process.env.GEMINI_API_KEY;
     const geminiRes = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`,
         {
           contents: [{parts: [{text: prompt}]}],
         },
     );
 
-    // ✅ 安全にレスポンスをパース
     let result = "不明";
     if (
       geminiRes.data &&
-      geminiRes.data.candidates &&
-      geminiRes.data.candidates[0] &&
-      geminiRes.data.candidates[0].content &&
-      geminiRes.data.candidates[0].content.parts &&
-      geminiRes.data.candidates[0].content.parts[0]
+        geminiRes.data.candidates &&
+        geminiRes.data.candidates[0] &&
+        geminiRes.data.candidates[0].content &&
+        geminiRes.data.candidates[0].content.parts &&
+        geminiRes.data.candidates[0].content.parts[0]
     ) {
       result = geminiRes.data.candidates[0].content.parts[0].text;
     }
 
     return res.status(200).json({result});
   } catch (err) {
-    logger.error("Gemini API Error:", err);
+    console.error("Gemini API Error:", err); // ← logger.error → console.error
     return res.status(500).json({error: "Gemini API call failed"});
   }
 });
+
+
+// ✅ Cloud Functionsとしてエクスポート
+exports.callGemini = functions.https.onRequest(app);

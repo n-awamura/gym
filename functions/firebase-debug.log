@@ -1,0 +1,377 @@
+[debug] [2025-03-30T12:57:38.321Z] ----------------------------------------------------------------------
+[debug] [2025-03-30T12:57:38.324Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2025-03-30T12:57:38.324Z] CLI Version:   14.0.1
+[debug] [2025-03-30T12:57:38.324Z] Platform:      darwin
+[debug] [2025-03-30T12:57:38.324Z] Node Version:  v22.14.0
+[debug] [2025-03-30T12:57:38.325Z] Time:          Sun Mar 30 2025 21:57:38 GMT+0900 (日本標準時)
+[debug] [2025-03-30T12:57:38.325Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-03-30T12:57:38.520Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-03-30T12:57:38.520Z] > authorizing via signed-in user (norihisa.awamura@gmail.com)
+[debug] [2025-03-30T12:57:38.520Z] [iam] checking project daoxiang-gym for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2025-03-30T12:57:38.521Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:38.521Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:38.522Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym:testIamPermissions [none]
+[debug] [2025-03-30T12:57:38.522Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym:testIamPermissions x-goog-quota-user=projects/daoxiang-gym
+[debug] [2025-03-30T12:57:38.522Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2025-03-30T12:57:39.223Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym:testIamPermissions 200
+[debug] [2025-03-30T12:57:39.223Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2025-03-30T12:57:39.227Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:39.227Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:39.228Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/daoxiang-gym/serviceAccounts/daoxiang-gym@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2025-03-30T12:57:39.228Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/daoxiang-gym/serviceAccounts/daoxiang-gym@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2025-03-30T12:57:39.484Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/daoxiang-gym/serviceAccounts/daoxiang-gym@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2025-03-30T12:57:39.485Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/daoxiang-gym/serviceAccounts/daoxiang-gym@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'daoxiang-gym'...
+[info] 
+[info] i  deploying functions 
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
+[info] ✔  functions: Finished running predeploy script. 
+[debug] [2025-03-30T12:57:40.296Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:40.296Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:40.296Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym [none]
+[debug] [2025-03-30T12:57:40.480Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym 200
+[debug] [2025-03-30T12:57:40.480Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym {"projectNumber":"317940321857","projectId":"daoxiang-gym","lifecycleState":"ACTIVE","name":"fudaoxiang-gym","labels":{"firebase":"enabled","firebase-core":"disabled","generative-language":"enabled"},"createTime":"2025-03-16T05:59:27.060105Z"}
+[info] i  functions: preparing codebase default for deployment 
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[debug] [2025-03-30T12:57:40.481Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:40.481Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:40.481Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:40.481Z] Checked if tokens are valid: true, expires at: 1743342099164
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[debug] [2025-03-30T12:57:40.481Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:40.482Z] Checked if tokens are valid: true, expires at: 1743342099164
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2025-03-30T12:57:40.482Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:40.482Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:40.482Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/cloudfunctions.googleapis.com [none]
+[debug] [2025-03-30T12:57:40.482Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/daoxiang-gym
+[debug] [2025-03-30T12:57:40.483Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/runtimeconfig.googleapis.com [none]
+[debug] [2025-03-30T12:57:40.483Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/daoxiang-gym
+[debug] [2025-03-30T12:57:40.484Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/cloudbuild.googleapis.com [none]
+[debug] [2025-03-30T12:57:40.484Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/cloudbuild.googleapis.com x-goog-quota-user=projects/daoxiang-gym
+[debug] [2025-03-30T12:57:40.485Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/artifactregistry.googleapis.com [none]
+[debug] [2025-03-30T12:57:40.485Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/artifactregistry.googleapis.com x-goog-quota-user=projects/daoxiang-gym
+[debug] [2025-03-30T12:57:40.839Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/runtimeconfig.googleapis.com 200
+[debug] [2025-03-30T12:57:40.839Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2025-03-30T12:57:40.852Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/cloudbuild.googleapis.com 200
+[debug] [2025-03-30T12:57:40.852Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/cloudbuild.googleapis.com [omitted]
+[info] ✔  functions: required API cloudbuild.googleapis.com is enabled 
+[debug] [2025-03-30T12:57:40.854Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/artifactregistry.googleapis.com 200
+[debug] [2025-03-30T12:57:40.854Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/artifactregistry.googleapis.com [omitted]
+[info] ✔  artifactregistry: required API artifactregistry.googleapis.com is enabled 
+[debug] [2025-03-30T12:57:41.535Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/cloudfunctions.googleapis.com 200
+[debug] [2025-03-30T12:57:41.535Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/cloudfunctions.googleapis.com [omitted]
+[info] ✔  functions: required API cloudfunctions.googleapis.com is enabled 
+[debug] [2025-03-30T12:57:41.535Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:41.536Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:41.536Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/daoxiang-gym/adminSdkConfig [none]
+[debug] [2025-03-30T12:57:41.843Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/daoxiang-gym/adminSdkConfig 200
+[debug] [2025-03-30T12:57:41.844Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/daoxiang-gym/adminSdkConfig {"projectId":"daoxiang-gym","storageBucket":"daoxiang-gym.firebasestorage.app"}
+[debug] [2025-03-30T12:57:41.844Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:41.844Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:41.844Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/daoxiang-gym/configs [none]
+[debug] [2025-03-30T12:57:42.199Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/daoxiang-gym/configs 200
+[debug] [2025-03-30T12:57:42.199Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/daoxiang-gym/configs {"configs":[{"name":"projects/daoxiang-gym/configs/gemini"}]}
+[debug] [2025-03-30T12:57:42.200Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:42.200Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:42.200Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/daoxiang-gym/configs/gemini/variables [none]
+[debug] [2025-03-30T12:57:42.467Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/daoxiang-gym/configs/gemini/variables 200
+[debug] [2025-03-30T12:57:42.467Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/daoxiang-gym/configs/gemini/variables {"variables":[{"name":"projects/daoxiang-gym/configs/gemini/variables/api_key","updateTime":"2025-03-30T07:53:41.873630256Z"},{"name":"projects/daoxiang-gym/configs/gemini/variables/key","updateTime":"2025-03-30T06:27:16.610225972Z"}]}
+[debug] [2025-03-30T12:57:42.467Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:42.467Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:42.468Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:42.468Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:42.468Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/daoxiang-gym/configs/gemini/variables/api_key [none]
+[debug] [2025-03-30T12:57:42.468Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/daoxiang-gym/configs/gemini/variables/key [none]
+[debug] [2025-03-30T12:57:42.733Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/daoxiang-gym/configs/gemini/variables/api_key 200
+[debug] [2025-03-30T12:57:42.734Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/daoxiang-gym/configs/gemini/variables/api_key {"name":"projects/daoxiang-gym/configs/gemini/variables/api_key","updateTime":"2025-03-30T07:53:41.873630256Z","text":"AIzaSyBWL6PxuwIKa3HkL64bQyN6mfWAI6cGaAE"}
+[debug] [2025-03-30T12:57:42.778Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/daoxiang-gym/configs/gemini/variables/key 200
+[debug] [2025-03-30T12:57:42.778Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/daoxiang-gym/configs/gemini/variables/key {"name":"projects/daoxiang-gym/configs/gemini/variables/key","updateTime":"2025-03-30T06:27:16.610225972Z","text":"AIzaSyBWL6PxuwIKa3HkL64bQyN6mfWAI6cGaAE"}
+[debug] [2025-03-30T12:57:42.779Z] Validating nodejs source
+[debug] [2025-03-30T12:57:43.277Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^1.8.4",
+    "cors": "^2.8.5",
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2025-03-30T12:57:43.277Z] Building nodejs source
+[info] i  functions: Loading and analyzing source code for codebase default to determine what to deploy 
+[debug] [2025-03-30T12:57:43.278Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-03-30T12:57:43.286Z] Found firebase-functions binary at '/Users/elephant/Documents/gym/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8169
+
+[info] GEMINI_API_KEY: AIzaSyBWL6PxuwIKa3HkL64bQyN6mfWAI6cGaAE
+
+[debug] [2025-03-30T12:57:43.628Z] Got response from /__/functions.yaml {"endpoints":{"callGemini":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"callGemini"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] i  extensions: ensuring required API firebaseextensions.googleapis.com is enabled... 
+[debug] [2025-03-30T12:57:47.657Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:47.657Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:47.657Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/firebaseextensions.googleapis.com [none]
+[debug] [2025-03-30T12:57:47.657Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/firebaseextensions.googleapis.com x-goog-quota-user=projects/daoxiang-gym
+[debug] [2025-03-30T12:57:48.628Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/firebaseextensions.googleapis.com 200
+[debug] [2025-03-30T12:57:48.628Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/firebaseextensions.googleapis.com [omitted]
+[info] ✔  extensions: required API firebaseextensions.googleapis.com is enabled 
+[debug] [2025-03-30T12:57:48.628Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-03-30T12:57:48.629Z] > authorizing via signed-in user (norihisa.awamura@gmail.com)
+[debug] [2025-03-30T12:57:48.629Z] [iam] checking project daoxiang-gym for permissions ["firebase.projects.get","firebaseextensions.instances.list"]
+[debug] [2025-03-30T12:57:48.629Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:48.629Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:48.629Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym:testIamPermissions [none]
+[debug] [2025-03-30T12:57:48.629Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym:testIamPermissions x-goog-quota-user=projects/daoxiang-gym
+[debug] [2025-03-30T12:57:48.629Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym:testIamPermissions {"permissions":["firebase.projects.get","firebaseextensions.instances.list"]}
+[debug] [2025-03-30T12:57:49.269Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym:testIamPermissions 200
+[debug] [2025-03-30T12:57:49.269Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym:testIamPermissions {"permissions":["firebase.projects.get","firebaseextensions.instances.list"]}
+[debug] [2025-03-30T12:57:49.270Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:49.270Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:49.271Z] >>> [apiv2][query] GET https://firebaseextensions.googleapis.com/v1beta/projects/daoxiang-gym/instances pageSize=100&pageToken=
+[debug] [2025-03-30T12:57:50.102Z] <<< [apiv2][status] GET https://firebaseextensions.googleapis.com/v1beta/projects/daoxiang-gym/instances 200
+[debug] [2025-03-30T12:57:50.102Z] <<< [apiv2][body] GET https://firebaseextensions.googleapis.com/v1beta/projects/daoxiang-gym/instances {}
+[info] i  functions: preparing functions directory for uploading... 
+[info] i  functions: packaged /Users/elephant/Documents/gym/functions (73.42 KB) for uploading 
+[debug] [2025-03-30T12:57:50.151Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:50.151Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:50.151Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/projects/daoxiang-gym/locations/-/functions [none]
+[debug] [2025-03-30T12:57:50.783Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/projects/daoxiang-gym/locations/-/functions 200
+[debug] [2025-03-30T12:57:50.784Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/projects/daoxiang-gym/locations/-/functions {}
+[debug] [2025-03-30T12:57:50.784Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:50.785Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:50.785Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/-/functions filter=environment%3D%22GEN_2%22
+[debug] [2025-03-30T12:57:52.091Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/-/functions 200
+[debug] [2025-03-30T12:57:52.091Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/-/functions {}
+[info] i  functions: ensuring required API run.googleapis.com is enabled... 
+[debug] [2025-03-30T12:57:52.095Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:52.095Z] Checked if tokens are valid: true, expires at: 1743342099164
+[info] i  functions: ensuring required API eventarc.googleapis.com is enabled... 
+[debug] [2025-03-30T12:57:52.095Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:52.095Z] Checked if tokens are valid: true, expires at: 1743342099164
+[info] i  functions: ensuring required API pubsub.googleapis.com is enabled... 
+[debug] [2025-03-30T12:57:52.096Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:52.096Z] Checked if tokens are valid: true, expires at: 1743342099164
+[info] i  functions: ensuring required API storage.googleapis.com is enabled... 
+[debug] [2025-03-30T12:57:52.096Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:52.096Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:52.096Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/run.googleapis.com [none]
+[debug] [2025-03-30T12:57:52.096Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/run.googleapis.com x-goog-quota-user=projects/daoxiang-gym
+[debug] [2025-03-30T12:57:52.097Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/eventarc.googleapis.com [none]
+[debug] [2025-03-30T12:57:52.097Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/eventarc.googleapis.com x-goog-quota-user=projects/daoxiang-gym
+[debug] [2025-03-30T12:57:52.099Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/pubsub.googleapis.com [none]
+[debug] [2025-03-30T12:57:52.099Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/pubsub.googleapis.com x-goog-quota-user=projects/daoxiang-gym
+[debug] [2025-03-30T12:57:52.104Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/storage.googleapis.com [none]
+[debug] [2025-03-30T12:57:52.104Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/storage.googleapis.com x-goog-quota-user=projects/daoxiang-gym
+[debug] [2025-03-30T12:57:53.044Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/run.googleapis.com 200
+[debug] [2025-03-30T12:57:53.045Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/run.googleapis.com [omitted]
+[info] ✔  functions: required API run.googleapis.com is enabled 
+[debug] [2025-03-30T12:57:53.139Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/storage.googleapis.com 200
+[debug] [2025-03-30T12:57:53.139Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/storage.googleapis.com [omitted]
+[info] ✔  functions: required API storage.googleapis.com is enabled 
+[debug] [2025-03-30T12:57:53.159Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/pubsub.googleapis.com 200
+[debug] [2025-03-30T12:57:53.159Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/pubsub.googleapis.com [omitted]
+[info] ✔  functions: required API pubsub.googleapis.com is enabled 
+[debug] [2025-03-30T12:57:53.303Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/eventarc.googleapis.com 200
+[debug] [2025-03-30T12:57:53.303Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/daoxiang-gym/services/eventarc.googleapis.com [omitted]
+[info] ✔  functions: required API eventarc.googleapis.com is enabled 
+[info] i  functions: generating the service identity for pubsub.googleapis.com... 
+[debug] [2025-03-30T12:57:53.304Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:53.304Z] Checked if tokens are valid: true, expires at: 1743342099164
+[info] i  functions: generating the service identity for eventarc.googleapis.com... 
+[debug] [2025-03-30T12:57:53.304Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:53.304Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:53.304Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1beta1/projects/317940321857/services/pubsub.googleapis.com:generateServiceIdentity [none]
+[debug] [2025-03-30T12:57:53.305Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1beta1/projects/317940321857/services/eventarc.googleapis.com:generateServiceIdentity [none]
+[debug] [2025-03-30T12:57:53.693Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1beta1/projects/317940321857/services/eventarc.googleapis.com:generateServiceIdentity 200
+[debug] [2025-03-30T12:57:53.693Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/317940321857/services/eventarc.googleapis.com:generateServiceIdentity {"name":"operations/finished.DONE_OPERATION","done":true,"response":{"@type":"type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity","email":"service-317940321857@gcp-sa-eventarc.iam.gserviceaccount.com","uniqueId":"113854552259869383826"}}
+[debug] [2025-03-30T12:57:54.307Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1beta1/projects/317940321857/services/pubsub.googleapis.com:generateServiceIdentity 200
+[debug] [2025-03-30T12:57:54.307Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/317940321857/services/pubsub.googleapis.com:generateServiceIdentity {"name":"operations/finished.DONE_OPERATION","done":true,"response":{"@type":"type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity","email":"service-317940321857@gcp-sa-pubsub.iam.gserviceaccount.com","uniqueId":"101522614765907499421"}}
+[debug] [2025-03-30T12:57:54.310Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:54.310Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:54.310Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym [none]
+[debug] [2025-03-30T12:57:55.009Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym 200
+[debug] [2025-03-30T12:57:55.009Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym {"projectNumber":"317940321857","projectId":"daoxiang-gym","lifecycleState":"ACTIVE","name":"fudaoxiang-gym","labels":{"firebase":"enabled","firebase-core":"disabled","generative-language":"enabled"},"createTime":"2025-03-16T05:59:27.060105Z"}
+[debug] [2025-03-30T12:57:55.011Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:55.011Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:55.011Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/daoxiang-gym/billingInfo [none]
+[debug] [2025-03-30T12:57:55.370Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/daoxiang-gym/billingInfo 200
+[debug] [2025-03-30T12:57:55.370Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/daoxiang-gym/billingInfo {"name":"projects/daoxiang-gym/billingInfo","projectId":"daoxiang-gym","billingAccountName":"billingAccounts/011983-8916DA-E0CBD4","billingEnabled":true}
+[debug] [2025-03-30T12:57:55.372Z] [functions] found 1 new HTTP functions, testing setIamPolicy permission...
+[debug] [2025-03-30T12:57:55.372Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:55.372Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:55.372Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym:testIamPermissions [none]
+[debug] [2025-03-30T12:57:55.373Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym:testIamPermissions x-goog-quota-user=projects/daoxiang-gym
+[debug] [2025-03-30T12:57:55.373Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym:testIamPermissions {"permissions":["cloudfunctions.functions.setIamPolicy"]}
+[debug] [2025-03-30T12:57:55.511Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym:testIamPermissions 200
+[debug] [2025-03-30T12:57:55.511Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/daoxiang-gym:testIamPermissions {"permissions":["cloudfunctions.functions.setIamPolicy"]}
+[debug] [2025-03-30T12:57:55.511Z] [functions] found setIamPolicy permission, proceeding with deploy
+[debug] [2025-03-30T12:57:55.512Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:55.512Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:55.513Z] >>> [apiv2][query] POST https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/functions:generateUploadUrl [none]
+[debug] [2025-03-30T12:57:56.582Z] <<< [apiv2][status] POST https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/functions:generateUploadUrl 200
+[debug] [2025-03-30T12:57:56.583Z] <<< [apiv2][body] POST https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/functions:generateUploadUrl {"uploadUrl":"https://storage.googleapis.com/gcf-v2-uploads-317940321857.us-central1.cloudfunctions.appspot.com/fb2fa163-4db6-46b5-8d1a-53f4d9c62543.zip?GoogleAccessId=service-317940321857@gcf-admin-robot.iam.gserviceaccount.com&Expires=1743341276&Signature=it1WOFtLukzJEJCMxLDZzWSm6ob%2FmiPGttZY%2Bzr2bgWn7IRbkrnyvWPKUYSYV%2Bt3%2FNdsbxvb5JoY%2F3mOu5gn%2FuGhJrVPcizV%2FL4VtqS56sD%2FGv0Y9VUO4t1sXVmxaAGlkr90mBmLtRbB%2B%2BtXrRMKoURQYeC8NK8pblxZU%2B0dy8UIGc8r8ZMNDsI%2BpbLPvI%2F1cYSCx%2B03orrGFqwoXxh9bL2iTlhTapQYM12sVdHrJtOAoHlKR%2BH%2BnhL2BRGD1Vt4RxHxzp7wzsx1F%2Fhl7n9lhN6Ql1zcw1X6yOu87DRbZsv2snSx9kAbOtaqmAPzYDZNi0NC27BliTr%2B0lXEizyvBA%3D%3D","storageSource":{"bucket":"gcf-v2-uploads-317940321857.us-central1.cloudfunctions.appspot.com","object":"fb2fa163-4db6-46b5-8d1a-53f4d9c62543.zip"}}
+[debug] [2025-03-30T12:57:56.584Z] >>> [apiv2][query] PUT https://storage.googleapis.com/gcf-v2-uploads-317940321857.us-central1.cloudfunctions.appspot.com/fb2fa163-4db6-46b5-8d1a-53f4d9c62543.zip GoogleAccessId=service-317940321857%40gcf-admin-robot.iam.gserviceaccount.com&Expires=1743341276&Signature=it1WOFtLukzJEJCMxLDZzWSm6ob%2FmiPGttZY%2Bzr2bgWn7IRbkrnyvWPKUYSYV%2Bt3%2FNdsbxvb5JoY%2F3mOu5gn%2FuGhJrVPcizV%2FL4VtqS56sD%2FGv0Y9VUO4t1sXVmxaAGlkr90mBmLtRbB%2B%2BtXrRMKoURQYeC8NK8pblxZU%2B0dy8UIGc8r8ZMNDsI%2BpbLPvI%2F1cYSCx%2B03orrGFqwoXxh9bL2iTlhTapQYM12sVdHrJtOAoHlKR%2BH%2BnhL2BRGD1Vt4RxHxzp7wzsx1F%2Fhl7n9lhN6Ql1zcw1X6yOu87DRbZsv2snSx9kAbOtaqmAPzYDZNi0NC27BliTr%2B0lXEizyvBA%3D%3D
+[debug] [2025-03-30T12:57:56.584Z] >>> [apiv2][body] PUT https://storage.googleapis.com/gcf-v2-uploads-317940321857.us-central1.cloudfunctions.appspot.com/fb2fa163-4db6-46b5-8d1a-53f4d9c62543.zip [stream]
+[debug] [2025-03-30T12:57:57.215Z] <<< [apiv2][status] PUT https://storage.googleapis.com/gcf-v2-uploads-317940321857.us-central1.cloudfunctions.appspot.com/fb2fa163-4db6-46b5-8d1a-53f4d9c62543.zip 200
+[debug] [2025-03-30T12:57:57.215Z] <<< [apiv2][body] PUT https://storage.googleapis.com/gcf-v2-uploads-317940321857.us-central1.cloudfunctions.appspot.com/fb2fa163-4db6-46b5-8d1a-53f4d9c62543.zip [omitted]
+[info] ✔  functions: functions folder uploaded successfully 
+[info] i  functions: creating Node.js 22 (2nd Gen) function callGemini(us-central1)... 
+[debug] [2025-03-30T12:57:57.221Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:57.221Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:57.221Z] >>> [apiv2][query] POST https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/functions functionId=callGemini
+[debug] [2025-03-30T12:57:57.221Z] >>> [apiv2][body] POST https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/functions {"name":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","buildConfig":{"runtime":"nodejs22","entryPoint":"callGemini","source":{"storageSource":{"bucket":"gcf-v2-uploads-317940321857.us-central1.cloudfunctions.appspot.com","object":"fb2fa163-4db6-46b5-8d1a-53f4d9c62543.zip"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""}},"serviceConfig":{"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"daoxiang-gym\",\"storageBucket\":\"daoxiang-gym.firebasestorage.app\"}","GCLOUD_PROJECT":"daoxiang-gym","EVENTARC_CLOUD_EVENT_SOURCE":"projects/daoxiang-gym/locations/us-central1/services/callGemini","FUNCTION_TARGET":"callGemini","LOG_EXECUTION_ID":"true"},"ingressSettings":null,"timeoutSeconds":null,"serviceAccountEmail":null,"availableMemory":"256Mi","minInstanceCount":null,"maxInstanceCount":null,"maxInstanceRequestConcurrency":80,"availableCpu":"1","vpcConnector":null,"vpcConnectorEgressSettings":null},"labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"08f428de072e3d47b3a77228e78ffb9ecf247820"}}
+[debug] [2025-03-30T12:57:58.705Z] <<< [apiv2][status] POST https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/functions 200
+[debug] [2025-03-30T12:57:58.705Z] <<< [apiv2][body] POST https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/functions {"name":"projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2025-03-30T12:57:58.653901421Z","target":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","verb":"create","cancelRequested":false,"apiVersion":"v2"},"done":false}
+[debug] [2025-03-30T12:57:58.706Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:58.706Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:57:58.706Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 [none]
+[debug] [2025-03-30T12:57:59.698Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 200
+[debug] [2025-03-30T12:57:59.698Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 {"name":"projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2025-03-30T12:57:58.653901421Z","target":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","verb":"create","cancelRequested":false,"apiVersion":"v2","requestResource":{"@type":"type.googleapis.com/google.cloud.functions.v2.Function","name":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","buildConfig":{"runtime":"nodejs22","entryPoint":"callGemini","source":{"storageSource":{"bucket":"gcf-v2-sources-317940321857-us-central1","object":"callGemini/function-source.zip","generation":"1743339478434095"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"serviceAccount":"projects/daoxiang-gym/serviceAccounts/317940321857-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/daoxiang-gym/locations/us-central1/services/callgemini","timeoutSeconds":60,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"daoxiang-gym\",\"storageBucket\":\"daoxiang-gym.firebasestorage.app\"}","GCLOUD_PROJECT":"daoxiang-gym","EVENTARC_CLOUD_EVENT_SOURCE":"projects/daoxiang-gym/locations/us-central1/services/callGemini","FUNCTION_TARGET":"callGemini","LOG_EXECUTION_ID":"true"},"ingressSettings":"ALLOW_ALL","serviceAccountEmail":"317940321857-compute@developer.gserviceaccount.com","availableMemory":"256Mi","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"08f428de072e3d47b3a77228e78ffb9ecf247820"},"environment":"GEN_2"},"stages":[{"name":"BUILD","message":"Creating build","state":"IN_PROGRESS","resource":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267","resourceUri":"https://console.cloud.google.com/cloud-build/builds;region=us-central1/8816e930-0eed-4b94-8584-028f820ba267?project=317940321857"},{"name":"SERVICE","state":"NOT_STARTED"}],"operationType":"CREATE_FUNCTION","buildName":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267"},"done":false}
+[debug] [2025-03-30T12:58:00.199Z] [create-default-us-central1-callGemini] Retrying task index 0
+[debug] [2025-03-30T12:58:00.200Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:58:00.200Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:58:00.200Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 [none]
+[debug] [2025-03-30T12:58:01.186Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 200
+[debug] [2025-03-30T12:58:01.186Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 {"name":"projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2025-03-30T12:57:58.653901421Z","target":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","verb":"create","cancelRequested":false,"apiVersion":"v2","requestResource":{"@type":"type.googleapis.com/google.cloud.functions.v2.Function","name":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","buildConfig":{"runtime":"nodejs22","entryPoint":"callGemini","source":{"storageSource":{"bucket":"gcf-v2-sources-317940321857-us-central1","object":"callGemini/function-source.zip","generation":"1743339478434095"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"serviceAccount":"projects/daoxiang-gym/serviceAccounts/317940321857-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/daoxiang-gym/locations/us-central1/services/callgemini","timeoutSeconds":60,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"daoxiang-gym\",\"storageBucket\":\"daoxiang-gym.firebasestorage.app\"}","GCLOUD_PROJECT":"daoxiang-gym","EVENTARC_CLOUD_EVENT_SOURCE":"projects/daoxiang-gym/locations/us-central1/services/callGemini","FUNCTION_TARGET":"callGemini","LOG_EXECUTION_ID":"true"},"ingressSettings":"ALLOW_ALL","serviceAccountEmail":"317940321857-compute@developer.gserviceaccount.com","availableMemory":"256Mi","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"08f428de072e3d47b3a77228e78ffb9ecf247820"},"environment":"GEN_2"},"stages":[{"name":"BUILD","message":"Build in progress","state":"IN_PROGRESS","resource":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267","resourceUri":"https://console.cloud.google.com/cloud-build/builds;region=us-central1/8816e930-0eed-4b94-8584-028f820ba267?project=317940321857"},{"name":"SERVICE","state":"NOT_STARTED"}],"operationType":"CREATE_FUNCTION","buildName":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267"},"done":false}
+[debug] [2025-03-30T12:58:02.188Z] [create-default-us-central1-callGemini] Retrying task index 0
+[debug] [2025-03-30T12:58:02.188Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:58:02.188Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:58:02.188Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 [none]
+[debug] [2025-03-30T12:58:03.208Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 200
+[debug] [2025-03-30T12:58:03.208Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 {"name":"projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2025-03-30T12:57:58.653901421Z","target":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","verb":"create","cancelRequested":false,"apiVersion":"v2","requestResource":{"@type":"type.googleapis.com/google.cloud.functions.v2.Function","name":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","buildConfig":{"runtime":"nodejs22","entryPoint":"callGemini","source":{"storageSource":{"bucket":"gcf-v2-sources-317940321857-us-central1","object":"callGemini/function-source.zip","generation":"1743339478434095"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"serviceAccount":"projects/daoxiang-gym/serviceAccounts/317940321857-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/daoxiang-gym/locations/us-central1/services/callgemini","timeoutSeconds":60,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"daoxiang-gym\",\"storageBucket\":\"daoxiang-gym.firebasestorage.app\"}","GCLOUD_PROJECT":"daoxiang-gym","EVENTARC_CLOUD_EVENT_SOURCE":"projects/daoxiang-gym/locations/us-central1/services/callGemini","FUNCTION_TARGET":"callGemini","LOG_EXECUTION_ID":"true"},"ingressSettings":"ALLOW_ALL","serviceAccountEmail":"317940321857-compute@developer.gserviceaccount.com","availableMemory":"256Mi","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"08f428de072e3d47b3a77228e78ffb9ecf247820"},"environment":"GEN_2"},"stages":[{"name":"BUILD","message":"Build in progress","state":"IN_PROGRESS","resource":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267","resourceUri":"https://console.cloud.google.com/cloud-build/builds;region=us-central1/8816e930-0eed-4b94-8584-028f820ba267?project=317940321857"},{"name":"SERVICE","state":"NOT_STARTED"}],"operationType":"CREATE_FUNCTION","buildName":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267"},"done":false}
+[debug] [2025-03-30T12:58:05.210Z] [create-default-us-central1-callGemini] Retrying task index 0
+[debug] [2025-03-30T12:58:05.211Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:58:05.211Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:58:05.211Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 [none]
+[debug] [2025-03-30T12:58:06.200Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 200
+[debug] [2025-03-30T12:58:06.201Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 {"name":"projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2025-03-30T12:57:58.653901421Z","target":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","verb":"create","cancelRequested":false,"apiVersion":"v2","requestResource":{"@type":"type.googleapis.com/google.cloud.functions.v2.Function","name":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","buildConfig":{"runtime":"nodejs22","entryPoint":"callGemini","source":{"storageSource":{"bucket":"gcf-v2-sources-317940321857-us-central1","object":"callGemini/function-source.zip","generation":"1743339478434095"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"serviceAccount":"projects/daoxiang-gym/serviceAccounts/317940321857-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/daoxiang-gym/locations/us-central1/services/callgemini","timeoutSeconds":60,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"daoxiang-gym\",\"storageBucket\":\"daoxiang-gym.firebasestorage.app\"}","GCLOUD_PROJECT":"daoxiang-gym","EVENTARC_CLOUD_EVENT_SOURCE":"projects/daoxiang-gym/locations/us-central1/services/callGemini","FUNCTION_TARGET":"callGemini","LOG_EXECUTION_ID":"true"},"ingressSettings":"ALLOW_ALL","serviceAccountEmail":"317940321857-compute@developer.gserviceaccount.com","availableMemory":"256Mi","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"08f428de072e3d47b3a77228e78ffb9ecf247820"},"environment":"GEN_2"},"stages":[{"name":"BUILD","message":"Build in progress","state":"IN_PROGRESS","resource":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267","resourceUri":"https://console.cloud.google.com/cloud-build/builds;region=us-central1/8816e930-0eed-4b94-8584-028f820ba267?project=317940321857"},{"name":"SERVICE","state":"NOT_STARTED"}],"operationType":"CREATE_FUNCTION","buildName":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267"},"done":false}
+[debug] [2025-03-30T12:58:10.202Z] [create-default-us-central1-callGemini] Retrying task index 0
+[debug] [2025-03-30T12:58:10.202Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:58:10.203Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:58:10.203Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 [none]
+[debug] [2025-03-30T12:58:11.179Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 200
+[debug] [2025-03-30T12:58:11.180Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 {"name":"projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2025-03-30T12:57:58.653901421Z","target":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","verb":"create","cancelRequested":false,"apiVersion":"v2","requestResource":{"@type":"type.googleapis.com/google.cloud.functions.v2.Function","name":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","buildConfig":{"runtime":"nodejs22","entryPoint":"callGemini","source":{"storageSource":{"bucket":"gcf-v2-sources-317940321857-us-central1","object":"callGemini/function-source.zip","generation":"1743339478434095"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"serviceAccount":"projects/daoxiang-gym/serviceAccounts/317940321857-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/daoxiang-gym/locations/us-central1/services/callgemini","timeoutSeconds":60,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"daoxiang-gym\",\"storageBucket\":\"daoxiang-gym.firebasestorage.app\"}","GCLOUD_PROJECT":"daoxiang-gym","EVENTARC_CLOUD_EVENT_SOURCE":"projects/daoxiang-gym/locations/us-central1/services/callGemini","FUNCTION_TARGET":"callGemini","LOG_EXECUTION_ID":"true"},"ingressSettings":"ALLOW_ALL","serviceAccountEmail":"317940321857-compute@developer.gserviceaccount.com","availableMemory":"256Mi","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"08f428de072e3d47b3a77228e78ffb9ecf247820"},"environment":"GEN_2"},"stages":[{"name":"BUILD","message":"Build in progress","state":"IN_PROGRESS","resource":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267","resourceUri":"https://console.cloud.google.com/cloud-build/builds;region=us-central1/8816e930-0eed-4b94-8584-028f820ba267?project=317940321857"},{"name":"SERVICE","state":"NOT_STARTED"}],"operationType":"CREATE_FUNCTION","buildName":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267"},"done":false}
+[debug] [2025-03-30T12:58:19.181Z] [create-default-us-central1-callGemini] Retrying task index 0
+[debug] [2025-03-30T12:58:19.182Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:58:19.182Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:58:19.182Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 [none]
+[debug] [2025-03-30T12:58:20.228Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 200
+[debug] [2025-03-30T12:58:20.228Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 {"name":"projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2025-03-30T12:57:58.653901421Z","target":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","verb":"create","cancelRequested":false,"apiVersion":"v2","requestResource":{"@type":"type.googleapis.com/google.cloud.functions.v2.Function","name":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","buildConfig":{"runtime":"nodejs22","entryPoint":"callGemini","source":{"storageSource":{"bucket":"gcf-v2-sources-317940321857-us-central1","object":"callGemini/function-source.zip","generation":"1743339478434095"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"serviceAccount":"projects/daoxiang-gym/serviceAccounts/317940321857-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/daoxiang-gym/locations/us-central1/services/callgemini","timeoutSeconds":60,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"daoxiang-gym\",\"storageBucket\":\"daoxiang-gym.firebasestorage.app\"}","GCLOUD_PROJECT":"daoxiang-gym","EVENTARC_CLOUD_EVENT_SOURCE":"projects/daoxiang-gym/locations/us-central1/services/callGemini","FUNCTION_TARGET":"callGemini","LOG_EXECUTION_ID":"true"},"ingressSettings":"ALLOW_ALL","serviceAccountEmail":"317940321857-compute@developer.gserviceaccount.com","availableMemory":"256Mi","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"08f428de072e3d47b3a77228e78ffb9ecf247820"},"environment":"GEN_2"},"stages":[{"name":"BUILD","message":"Build in progress","state":"IN_PROGRESS","resource":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267","resourceUri":"https://console.cloud.google.com/cloud-build/builds;region=us-central1/8816e930-0eed-4b94-8584-028f820ba267?project=317940321857"},{"name":"SERVICE","state":"NOT_STARTED"}],"operationType":"CREATE_FUNCTION","buildName":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267"},"done":false}
+[debug] [2025-03-30T12:58:30.229Z] [create-default-us-central1-callGemini] Retrying task index 0
+[debug] [2025-03-30T12:58:30.230Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:58:30.230Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:58:30.230Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 [none]
+[debug] [2025-03-30T12:58:30.529Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 200
+[debug] [2025-03-30T12:58:30.529Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 {"name":"projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2025-03-30T12:57:58.653901421Z","target":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","verb":"create","cancelRequested":false,"apiVersion":"v2","requestResource":{"@type":"type.googleapis.com/google.cloud.functions.v2.Function","name":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","buildConfig":{"runtime":"nodejs22","entryPoint":"callGemini","source":{"storageSource":{"bucket":"gcf-v2-sources-317940321857-us-central1","object":"callGemini/function-source.zip","generation":"1743339478434095"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"serviceAccount":"projects/daoxiang-gym/serviceAccounts/317940321857-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/daoxiang-gym/locations/us-central1/services/callgemini","timeoutSeconds":60,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"daoxiang-gym\",\"storageBucket\":\"daoxiang-gym.firebasestorage.app\"}","GCLOUD_PROJECT":"daoxiang-gym","EVENTARC_CLOUD_EVENT_SOURCE":"projects/daoxiang-gym/locations/us-central1/services/callGemini","FUNCTION_TARGET":"callGemini","LOG_EXECUTION_ID":"true"},"ingressSettings":"ALLOW_ALL","serviceAccountEmail":"317940321857-compute@developer.gserviceaccount.com","availableMemory":"256Mi","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"08f428de072e3d47b3a77228e78ffb9ecf247820"},"environment":"GEN_2"},"stages":[{"name":"BUILD","message":"Build in progress","state":"IN_PROGRESS","resource":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267","resourceUri":"https://console.cloud.google.com/cloud-build/builds;region=us-central1/8816e930-0eed-4b94-8584-028f820ba267?project=317940321857"},{"name":"SERVICE","state":"NOT_STARTED"}],"operationType":"CREATE_FUNCTION","buildName":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267"},"done":false}
+[debug] [2025-03-30T12:58:40.531Z] [create-default-us-central1-callGemini] Retrying task index 0
+[debug] [2025-03-30T12:58:40.531Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:58:40.531Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:58:40.532Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 [none]
+[debug] [2025-03-30T12:58:41.800Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 200
+[debug] [2025-03-30T12:58:41.800Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 {"name":"projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2025-03-30T12:57:58.653901421Z","target":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","verb":"create","cancelRequested":false,"apiVersion":"v2","requestResource":{"@type":"type.googleapis.com/google.cloud.functions.v2.Function","name":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","buildConfig":{"runtime":"nodejs22","entryPoint":"callGemini","source":{"storageSource":{"bucket":"gcf-v2-sources-317940321857-us-central1","object":"callGemini/function-source.zip","generation":"1743339478434095"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"serviceAccount":"projects/daoxiang-gym/serviceAccounts/317940321857-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/daoxiang-gym/locations/us-central1/services/callgemini","timeoutSeconds":60,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"daoxiang-gym\",\"storageBucket\":\"daoxiang-gym.firebasestorage.app\"}","GCLOUD_PROJECT":"daoxiang-gym","EVENTARC_CLOUD_EVENT_SOURCE":"projects/daoxiang-gym/locations/us-central1/services/callGemini","FUNCTION_TARGET":"callGemini","LOG_EXECUTION_ID":"true"},"ingressSettings":"ALLOW_ALL","serviceAccountEmail":"317940321857-compute@developer.gserviceaccount.com","availableMemory":"256Mi","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"08f428de072e3d47b3a77228e78ffb9ecf247820"},"environment":"GEN_2"},"stages":[{"name":"BUILD","message":"Build in progress","state":"IN_PROGRESS","resource":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267","resourceUri":"https://console.cloud.google.com/cloud-build/builds;region=us-central1/8816e930-0eed-4b94-8584-028f820ba267?project=317940321857"},{"name":"SERVICE","state":"NOT_STARTED"}],"operationType":"CREATE_FUNCTION","buildName":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267"},"done":false}
+[debug] [2025-03-30T12:58:51.801Z] [create-default-us-central1-callGemini] Retrying task index 0
+[debug] [2025-03-30T12:58:51.801Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:58:51.801Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:58:51.801Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 [none]
+[debug] [2025-03-30T12:58:52.896Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 200
+[debug] [2025-03-30T12:58:52.897Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 {"name":"projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2025-03-30T12:57:58.653901421Z","target":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","verb":"create","cancelRequested":false,"apiVersion":"v2","requestResource":{"@type":"type.googleapis.com/google.cloud.functions.v2.Function","name":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","buildConfig":{"runtime":"nodejs22","entryPoint":"callGemini","source":{"storageSource":{"bucket":"gcf-v2-sources-317940321857-us-central1","object":"callGemini/function-source.zip","generation":"1743339478434095"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"serviceAccount":"projects/daoxiang-gym/serviceAccounts/317940321857-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/daoxiang-gym/locations/us-central1/services/callgemini","timeoutSeconds":60,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"daoxiang-gym\",\"storageBucket\":\"daoxiang-gym.firebasestorage.app\"}","GCLOUD_PROJECT":"daoxiang-gym","EVENTARC_CLOUD_EVENT_SOURCE":"projects/daoxiang-gym/locations/us-central1/services/callGemini","FUNCTION_TARGET":"callGemini","LOG_EXECUTION_ID":"true"},"ingressSettings":"ALLOW_ALL","serviceAccountEmail":"317940321857-compute@developer.gserviceaccount.com","availableMemory":"256Mi","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"08f428de072e3d47b3a77228e78ffb9ecf247820"},"environment":"GEN_2"},"stages":[{"name":"BUILD","message":"Build finished","state":"COMPLETE","resource":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267","resourceUri":"https://console.cloud.google.com/cloud-build/builds;region=us-central1/8816e930-0eed-4b94-8584-028f820ba267?project=317940321857"},{"name":"SERVICE","message":"Creating Cloud Run service","state":"IN_PROGRESS","resource":"projects/daoxiang-gym/locations/us-central1/services/callgemini","resourceUri":"https://console.cloud.google.com/run/detail/us-central1/callgemini?project=daoxiang-gym"}],"sourceToken":"Cldwcm9qZWN0cy8zMTc5NDAzMjE4NTcvbG9jYXRpb25zL3VzLWNlbnRyYWwxL2J1aWxkcy84ODE2ZTkzMC0wZWVkLTRiOTQtODU4NC0wMjhmODIwYmEyNjcSaHVzLWNlbnRyYWwxLWRvY2tlci5wa2cuZGV2L2Rhb3hpYW5nLWd5bS9nY2YtYXJ0aWZhY3RzL2Rhb3hpYW5nLS1neW1fX3VzLS1jZW50cmFsMV9fY2FsbF9nZW1pbmk6dmVyc2lvbl8xGMGc4bWgCSJAcHJvamVjdHMvZGFveGlhbmctZ3ltL2xvY2F0aW9ucy91cy1jZW50cmFsMS9mdW5jdGlvbnMvY2FsbEdlbWluaSoMCIWApb8GEMjE394BMghub2RlanMyMjp2CiNnY3IuaW8vZ2FlLXJ1bnRpbWVzL25vZGVqczIyOnN0YWJsZRJPdXMtY2VudHJhbDEtZG9ja2VyLnBrZy5kZXYvc2VydmVybGVzcy1ydW50aW1lcy9nb29nbGUtMjItZnVsbC9ydW50aW1lcy9ub2RlanMyMkAB","operationType":"CREATE_FUNCTION","buildName":"projects/317940321857/locations/us-central1/builds/8816e930-0eed-4b94-8584-028f820ba267"},"done":false}
+[debug] [2025-03-30T12:58:52.897Z] Got source token Cldwcm9qZWN0cy8zMTc5NDAzMjE4NTcvbG9jYXRpb25zL3VzLWNlbnRyYWwxL2J1aWxkcy84ODE2ZTkzMC0wZWVkLTRiOTQtODU4NC0wMjhmODIwYmEyNjcSaHVzLWNlbnRyYWwxLWRvY2tlci5wa2cuZGV2L2Rhb3hpYW5nLWd5bS9nY2YtYXJ0aWZhY3RzL2Rhb3hpYW5nLS1neW1fX3VzLS1jZW50cmFsMV9fY2FsbF9nZW1pbmk6dmVyc2lvbl8xGMGc4bWgCSJAcHJvamVjdHMvZGFveGlhbmctZ3ltL2xvY2F0aW9ucy91cy1jZW50cmFsMS9mdW5jdGlvbnMvY2FsbEdlbWluaSoMCIWApb8GEMjE394BMghub2RlanMyMjp2CiNnY3IuaW8vZ2FlLXJ1bnRpbWVzL25vZGVqczIyOnN0YWJsZRJPdXMtY2VudHJhbDEtZG9ja2VyLnBrZy5kZXYvc2VydmVybGVzcy1ydW50aW1lcy9nb29nbGUtMjItZnVsbC9ydW50aW1lcy9ub2RlanMyMkAB for region us-central1
+[debug] [2025-03-30T12:59:02.899Z] [create-default-us-central1-callGemini] Retrying task index 0
+[debug] [2025-03-30T12:59:02.899Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:59:02.900Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:59:02.900Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 [none]
+[debug] [2025-03-30T12:59:03.953Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 200
+[debug] [2025-03-30T12:59:03.953Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501 {"name":"projects/daoxiang-gym/locations/us-central1/operations/operation-1743339478182-6318eda51e8f2-31398bc9-320a8501","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2025-03-30T12:57:58.653901421Z","endTime":"2025-03-30T12:58:55.708882811Z","target":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","verb":"create","cancelRequested":false,"apiVersion":"v2","requestResource":{"@type":"type.googleapis.com/google.cloud.functions.v2.Function","name":"projects/daoxiang-gym/locations/us-central1/functions/callGemini","buildConfig":{"runtime":"nodejs22","entryPoint":"callGemini","source":{"storageSource":{"bucket":"gcf-v2-sources-317940321857-us-central1","object":"callGemini/function-source.zip","generation":"1743339478434095"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"serviceAccount":"projects/daoxiang-gym/serviceAccounts/317940321857-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/daoxiang-gym/locations/us-central1/services/callgemini","timeoutSeconds":60,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"daoxiang-gym\",\"storageBucket\":\"daoxiang-gym.firebasestorage.app\"}","GCLOUD_PROJECT":"daoxiang-gym","EVENTARC_CLOUD_EVENT_SOURCE":"projects/daoxiang-gym/locations/us-central1/services/callGemini","FUNCTION_TARGET":"callGemini","LOG_EXECUTION_ID":"true"},"ingressSettings":"ALLOW_ALL","serviceAccountEmail":"317940321857-compute@developer.gserviceaccount.com","availableMemory":"256Mi","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"08f428de072e3d47b3a77228e78ffb9ecf247820"},"environment":"GEN_2"},"stages":[{"name":"ARTIFACT_REGISTRY","message":"Deleting function artifacts in Artifact Registry","state":"COMPLETE"},{"name":"SERVICE","message":"Deleting Cloud Run service","state":"COMPLETE","resource":"projects/daoxiang-gym/locations/us-central1/services/callgemini"}],"operationType":"CREATE_FUNCTION"},"done":true,"error":{"code":3,"message":"Could not create or update Cloud Run service callgemini, Container Healthcheck failed. Revision 'callgemini-00001-zas' is not ready and cannot serve traffic. The user-provided container failed to start and listen on the port defined provided by the PORT=8080 environment variable within the allocated timeout. This can happen when the container port is misconfigured or if the timeout is too short. The health check timeout can be extended. Logs for this revision might contain more information.\n\nLogs URL: https://console.cloud.google.com/logs/viewer?project=daoxiang-gym&resource=cloud_run_revision/service_name/callgemini/revision_name/callgemini-00001-zas&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22callgemini%22%0Aresource.labels.revision_name%3D%22callgemini-00001-zas%22 \nFor more troubleshooting guidance, see https://cloud.google.com/run/docs/troubleshooting#container-failed-to-start"}}
+[debug] [2025-03-30T12:59:03.954Z] Got source token undefined for region us-central1
+[error] Could not create or update Cloud Run service callgemini, Container Healthcheck failed. Revision 'callgemini-00001-zas' is not ready and cannot serve traffic. The user-provided container failed to start and listen on the port defined provided by the PORT=8080 environment variable within the allocated timeout. This can happen when the container port is misconfigured or if the timeout is too short. The health check timeout can be extended. Logs for this revision might contain more information.
+
+Logs URL: https://console.cloud.google.com/logs/viewer?project=daoxiang-gym&resource=cloud_run_revision/service_name/callgemini/revision_name/callgemini-00001-zas&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22callgemini%22%0Aresource.labels.revision_name%3D%22callgemini-00001-zas%22 
+For more troubleshooting guidance, see https://cloud.google.com/run/docs/troubleshooting#container-failed-to-start
+[debug] [2025-03-30T12:59:03.968Z] Total Function Deployment time: 66738
+[debug] [2025-03-30T12:59:03.968Z] 1 Functions Deployed
+[debug] [2025-03-30T12:59:03.969Z] 1 Functions Errored
+[debug] [2025-03-30T12:59:03.969Z] 0 Function Deployments Aborted
+[debug] [2025-03-30T12:59:03.969Z] Average Function Deployment time: 66737
+[info] 
+[info] Functions deploy had errors with the following functions:
+	callGemini(us-central1)
+[debug] [2025-03-30T12:59:04.081Z] Not printing URL for HTTPS function. Typically this means it didn't match a filter or we failed deployment
+[debug] [2025-03-30T12:59:04.082Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:59:04.082Z] Checked if tokens are valid: true, expires at: 1743342099164
+[debug] [2025-03-30T12:59:04.082Z] >>> [apiv2][query] GET https://artifactregistry.googleapis.com/v1/projects/daoxiang-gym/locations/us-central1/repositories/gcf-artifacts [none]
+[debug] [2025-03-30T12:59:05.135Z] <<< [apiv2][status] GET https://artifactregistry.googleapis.com/v1/projects/daoxiang-gym/locations/us-central1/repositories/gcf-artifacts 200
+[debug] [2025-03-30T12:59:05.135Z] <<< [apiv2][body] GET https://artifactregistry.googleapis.com/v1/projects/daoxiang-gym/locations/us-central1/repositories/gcf-artifacts {"name":"projects/daoxiang-gym/locations/us-central1/repositories/gcf-artifacts","format":"DOCKER","description":"This repository is created and used by Cloud Functions for storing function docker images.","labels":{"goog-managed-by":"cloudfunctions"},"createTime":"2025-03-30T06:34:54.578266Z","updateTime":"2025-03-30T12:58:55.581791Z","mode":"STANDARD_REPOSITORY","cleanupPolicies":{"firebase-functions-cleanup":{"id":"firebase-functions-cleanup","action":"DELETE","condition":{"tagState":"ANY","olderThan":"2592000s"}}},"sizeBytes":"282345183","vulnerabilityScanningConfig":{"lastEnableTime":"2025-03-30T06:34:46.164878697Z","enablementState":"SCANNING_DISABLED","enablementStateReason":"API containerscanning.googleapis.com is not enabled."},"satisfiesPzi":true,"registryUri":"us-central1-docker.pkg.dev/daoxiang-gym/gcf-artifacts"}
+[debug] [2025-03-30T12:59:05.136Z] Functions deploy failed.
+[debug] [2025-03-30T12:59:05.136Z] {
+  "endpoint": {
+    "id": "callGemini",
+    "project": "daoxiang-gym",
+    "region": "us-central1",
+    "entryPoint": "callGemini",
+    "platform": "gcfv2",
+    "runtime": "nodejs22",
+    "httpsTrigger": {},
+    "labels": {
+      "deployment-tool": "cli-firebase"
+    },
+    "serviceAccount": null,
+    "ingressSettings": null,
+    "availableMemoryMb": null,
+    "timeoutSeconds": null,
+    "maxInstances": null,
+    "minInstances": null,
+    "concurrency": 80,
+    "vpc": null,
+    "environmentVariables": {
+      "FIREBASE_CONFIG": "{\"projectId\":\"daoxiang-gym\",\"storageBucket\":\"daoxiang-gym.firebasestorage.app\"}",
+      "GCLOUD_PROJECT": "daoxiang-gym",
+      "EVENTARC_CLOUD_EVENT_SOURCE": "projects/daoxiang-gym/locations/us-central1/services/callGemini"
+    },
+    "codebase": "default",
+    "cpu": 1,
+    "targetedByOnly": false,
+    "hash": "08f428de072e3d47b3a77228e78ffb9ecf247820"
+  },
+  "op": "create",
+  "original": {
+    "name": "FirebaseError",
+    "children": [],
+    "exit": 1,
+    "message": "Could not create or update Cloud Run service callgemini, Container Healthcheck failed. Revision 'callgemini-00001-zas' is not ready and cannot serve traffic. The user-provided container failed to start and listen on the port defined provided by the PORT=8080 environment variable within the allocated timeout. This can happen when the container port is misconfigured or if the timeout is too short. The health check timeout can be extended. Logs for this revision might contain more information.\n\nLogs URL: https://console.cloud.google.com/logs/viewer?project=daoxiang-gym&resource=cloud_run_revision/service_name/callgemini/revision_name/callgemini-00001-zas&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22callgemini%22%0Aresource.labels.revision_name%3D%22callgemini-00001-zas%22 \nFor more troubleshooting guidance, see https://cloud.google.com/run/docs/troubleshooting#container-failed-to-start",
+    "original": {
+      "code": 3,
+      "message": "Could not create or update Cloud Run service callgemini, Container Healthcheck failed. Revision 'callgemini-00001-zas' is not ready and cannot serve traffic. The user-provided container failed to start and listen on the port defined provided by the PORT=8080 environment variable within the allocated timeout. This can happen when the container port is misconfigured or if the timeout is too short. The health check timeout can be extended. Logs for this revision might contain more information.\n\nLogs URL: https://console.cloud.google.com/logs/viewer?project=daoxiang-gym&resource=cloud_run_revision/service_name/callgemini/revision_name/callgemini-00001-zas&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22callgemini%22%0Aresource.labels.revision_name%3D%22callgemini-00001-zas%22 \nFor more troubleshooting guidance, see https://cloud.google.com/run/docs/troubleshooting#container-failed-to-start"
+    },
+    "status": 3,
+    "code": 3
+  }
+}
+[debug] [2025-03-30T12:59:05.185Z] Error: Failed to create function callGemini in region us-central1
+    at /usr/local/lib/node_modules/firebase-tools/lib/deploy/functions/release/fabricator.js:294:27
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Fabricator.createV2Function (/usr/local/lib/node_modules/firebase-tools/lib/deploy/functions/release/fabricator.js:278:30)
+    at async Fabricator.createEndpoint (/usr/local/lib/node_modules/firebase-tools/lib/deploy/functions/release/fabricator.js:137:13)
+    at async handle (/usr/local/lib/node_modules/firebase-tools/lib/deploy/functions/release/fabricator.js:89:17)
+[error] 
+[error] Error: There was an error deploying functions
