@@ -473,7 +473,8 @@ document.addEventListener("DOMContentLoaded", function () {
       container.appendChild(dateElem);
       
       const memoElem = document.createElement("p");
-      memoElem.textContent = record.memo;
+      // 改行を<br>タグに変換して表示
+      memoElem.innerHTML = record.memo.replace(/\n/g, '<br>');
       container.appendChild(memoElem);
       
       const hr = document.createElement("hr");
