@@ -4,47 +4,103 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WORKOUT LOG ログイン</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
 
   <!-- iOS 向けホーム画面設定 -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="MyGymLog">
   <link rel="apple-touch-icon" sizes="180x180" href="img/fudaoxiang.png">
-  <meta name="theme-color" content="#526d82">
+  <meta name="theme-color" content="#526d82"> <!-- アプリのヘッダーカラーに合わせる -->
+
+  <style>
+    /* アプリの配色を適用 */
+    :root {
+      --header-bg-color: #526d82; /* App header color */
+      --header-text-color: #FFFFFF; /* App header text color */
+      --body-bg-color: #f8f9fa; /* Light gray background like Bootstrap default */
+      --button-bg-color: #526d82; /* Match header color */
+      --button-hover-bg-color: #3e5364; /* Darker shade of header color */
+      --border-color: #dee2e6; /* Standard Bootstrap border color */
+      --main-text-color: #212529; /* Standard Bootstrap text color */
+      --card-bg-color: #ffffff; /* White card background */
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background-color: var(--body-bg-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      border-color: var(--border-color);
+      box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+      background-color: var(--card-bg-color);
+    }
+    .card-title {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--header-bg-color); /* Use header color for title for contrast */
+    }
+    .btn-primary {
+        background-color: var(--button-bg-color);
+        border-color: var(--button-bg-color);
+        color: var(--header-text-color); /* Ensure text is white */
+    }
+    .btn-primary:hover {
+        background-color: var(--button-hover-bg-color);
+        border-color: var(--button-hover-bg-color);
+        color: var(--header-text-color);
+    }
+    .form-control:focus {
+        border-color: var(--header-bg-color);
+        box-shadow: 0 0 0 0.25rem rgba(82, 109, 130, 0.5); /* Adjusted focus shadow color */
+    }
+    label {
+      color: var(--main-text-color); /* Ensure labels use main text color */
+    }
+  </style>
 </head>
-<body class="bg-light">
-  <div class="container mt-5">
+<body>
+  <div class="container">
     <div class="card mx-auto" style="max-width: 400px;">
-      <div class="card-body">
-        <h4 class="card-title text-center mb-4">ログイン</h4>
+      <div class="card-body p-4">
+        <div class="text-center mb-4">
+            <img src="img/fudaoxiang.png" alt="Logo" width="50" class="mb-2">
+            <h4 class="card-title">WORKOUT LOG ログイン</h4>
+        </div>
         <form id="loginForm">
-          <div class="form-group">
-            <label for="email">メールアドレス</label>
+          <div class="mb-3">
+            <label for="email" class="form-label">メールアドレス</label>
             <input type="email" class="form-control" id="email" placeholder="メールアドレスを入力" required>
           </div>
-          <div class="form-group">
-            <label for="password">パスワード</label>
+          <div class="mb-3">
+            <label for="password" class="form-label">パスワード</label>
             <input type="password" class="form-control" id="password" placeholder="パスワードを入力" required>
           </div>
-          <button type="submit" class="btn btn-primary btn-block">ログイン</button>
-          <div id="loginError" class="text-danger mt-2" style="display:none;"></div>
+          <button type="submit" class="btn btn-primary w-100">ログイン</button>
+          <div id="loginError" class="text-danger mt-3" style="display:none;"></div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- Bootstrap JSなど -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <!-- Firebaseの初期化とログイン処理 -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
-    // Firebase 設定
+    // Firebase 設定 (現在のものを維持)
     const firebaseConfig = {
       apiKey: "AIzaSyAWXaYp94kpW-iXxWmirXW-WGE07--I8u0",
       authDomain: "daoxiang-gym.firebaseapp.com",
@@ -58,12 +114,13 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // ログイン処理
+    // ログイン処理 (現在のものを維持)
     const loginForm = document.getElementById("loginForm");
     const loginError = document.getElementById("loginError");
 
     loginForm.addEventListener("submit", (e) => {
       e.preventDefault();
+      loginError.style.display = "none"; // エラーメッセージをリセット
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
@@ -75,7 +132,7 @@
         .catch((error) => {
           console.error("ログインエラー:", error);
           loginError.style.display = "block";
-          loginError.textContent = "ログインに失敗しました: " + error.message;
+          loginError.textContent = "メールアドレスまたはパスワードが正しくありません。";
         });
     });
   </script>
