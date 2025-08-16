@@ -1,2 +1,8 @@
 .env
 js/config.js
+
+# Firebase / Cloudflare Files
+functions/
+gemini-proxy/
+firebase.json
+.firebaserc

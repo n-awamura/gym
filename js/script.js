@@ -1,4 +1,4 @@
-import { db } from './firebase-config.js';
+import { db, auth } from './firebase-config.js'; // auth をインポート
 import {
   collection,
   doc,
@@ -9,8 +9,37 @@ import {
   orderBy,
   limit
 } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+
 
 document.addEventListener("DOMContentLoaded", function () {
+  
+  // 認証状態の監視
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      // ユーザーがログインしていない場合、login.htmlにリダイレクト
+      window.location.href = 'login.html';
+    }
+  });
+
+  // ログアウト処理
+  const logoutButton = document.getElementById("logoutButton");
+  if (logoutButton) {
+    logoutButton.addEventListener("click", () => {
+      signOut(auth).then(() => {
+        // ログアウト成功後、login.htmlにリダイレクト
+        console.log("ログアウトしました");
+        window.location.href = 'login.html';
+      }).catch((error) => {
+        console.error("ログアウトエラー:", error);
+      });
+    });
+  }
+
   const tokyo = [35.7, 139.7];
   const taiwan = [23.7, 121.0];
 
