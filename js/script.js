@@ -535,16 +535,37 @@ const elephantImg = document.getElementById("elephantImg");
   }
   // Gemini API を呼び出す関数
   function Gemini(prompt) {
-    return fetch("https://gemini-proxy.fudaoxiang-gym.workers.dev", {
+    // 既存の実績あるAPIサーバー (gemini-model-switcher) を利用
+    const workerUrl = "https://gemini-model-switcher.fudaoxiang-gym.workers.dev";
+    
+    // gemini-model-switcher は modelName をボディに含めることを期待している
+    // デフォルトで gemini-2.0-flash-lite を指定（switcher側で対応している前提、もしダメなら 1.5-flash に戻す）
+    // chat_cleaned では gemini-2.5-flash などを使っていたが、ここでは lite を試す
+    const requestBody = {
+      contents: [{ parts: [{ text: prompt }] }],
+      modelName: "gemini-2.0-flash-lite" 
+    };
+
+    return fetch(workerUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt })
+      body: JSON.stringify(requestBody)
     })
       .then(res => {
-        if (!res.ok) throw new Error("Network error");
+        if (!res.ok) throw new Error(`Network error: ${res.status}`);
         return res.json();
       })
-      .then(data => data.result)
+      .then(data => {
+        // gemini-model-switcher は { answer: "...", sources: ... } を返す
+        if (data && data.answer) {
+            return data.answer;
+        }
+        // 万が一 { result: ... } で返ってきた場合（古い形式）のフォールバック
+        if (data && data.result) {
+            return data.result;
+        }
+        return "不明";
+      })
       .catch(err => {
         console.error("Gemini error:", err);
         return "エラー";
