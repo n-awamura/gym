@@ -210,7 +210,7 @@
         const lon = tokyo[1] + frac * (taipei[1] - tokyo[1]);
         const bearing = getBearingFromNorth(tokyo[0], tokyo[1], lat, lon);
         const distFromJapan = rawFraction * totalDist;
-        const text = `現在、${roundTrip}往復目の往路、東京から ${distFromJapan.toFixed(2)}km です。加油！`;
+        const text = `${roundTrip}往復目の往路、東京から ${distFromJapan.toFixed(2)}km です。加油！`;
         return { lat, lon, bearing, text };
       } else {
         // 復路 (台北→東京)
@@ -219,7 +219,7 @@
         const lon = taipei[1] + frac * (tokyo[1] - taipei[1]);
         const bearing = getBearingFromNorth(taipei[0], taipei[1], lat, lon);
         const distFromTaipei = frac * totalDist;
-        const text = `現在、${roundTrip}往復目の復路、台北から ${distFromTaipei.toFixed(2)}km です。加油！`;
+        const text = `${roundTrip}往復目の復路、台北から ${distFromTaipei.toFixed(2)}km です。加油！`;
         return { lat, lon, bearing, text };
       }
     }
