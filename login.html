@@ -98,7 +98,13 @@
   <!-- Firebaseの初期化とログイン処理 -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      setPersistence,
+      browserLocalPersistence,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
     // Firebase 設定 (現在のものを維持)
     const firebaseConfig = {
@@ -113,27 +119,38 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const persistenceReady = setPersistence(auth, browserLocalPersistence).catch((error) => {
+      console.error("Failed to set auth persistence:", error);
+      // 失敗してもセッション単位での認証は可能なので、ここでは致命的エラーとして扱わない
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("既にログイン済みのため、ホームへリダイレクトします");
+        window.location.href = "index.html";
+      }
+    });
 
     // ログイン処理 (現在のものを維持)
     const loginForm = document.getElementById("loginForm");
     const loginError = document.getElementById("loginError");
 
-    loginForm.addEventListener("submit", (e) => {
+    loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       loginError.style.display = "none"; // エラーメッセージをリセット
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          console.log("ログイン成功:", userCredential);
-          window.location.href = "index.html";
-        })
-        .catch((error) => {
-          console.error("ログインエラー:", error);
-          loginError.style.display = "block";
-          loginError.textContent = "メールアドレスまたはパスワードが正しくありません。";
-        });
+      try {
+        await persistenceReady;
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        console.log("ログイン成功:", userCredential);
+        window.location.href = "index.html";
+      } catch (error) {
+        console.error("ログインエラー:", error);
+        loginError.style.display = "block";
+        loginError.textContent = "メールアドレスまたはパスワードが正しくありません。";
+      }
     });
   </script>
 </body>
