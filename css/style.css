@@ -301,7 +301,7 @@ main.container {
 .exercise-row .form-control {
   width: auto !important;   /* デフォルトのwidth:100%を解除 */
   min-width: 0 !important;
-  font-size: 0.9rem !important;
+  font-size: 0.85rem !important;
   text-align: center;       /* 文字を中央寄せ */
   box-sizing: border-box;
   padding: 0.3rem 0.5rem !important;
