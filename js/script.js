@@ -50,6 +50,8 @@ document.addEventListener("DOMContentLoaded", function () {
     return String(num).padStart(2, "0");
   }
 
+  const EXERCISE_CATALOG_KEY = "exerciseCatalog";
+
   function getRecords() {
     return JSON.parse(localStorage.getItem("trainingRecords")) || [];
   }
@@ -100,6 +102,148 @@ document.addEventListener("DOMContentLoaded", function () {
     if (md) {
       md.textContent = `${currentYear}年${currentMonth}月`;
     }
+  }
+
+  function normalizeCatalog(list = []) {
+    return Array.from(new Set(
+      list
+        .filter(name => typeof name === "string")
+        .map(name => name.trim())
+        .filter(Boolean)
+    )).sort((a, b) => a.localeCompare(b, "ja"));
+  }
+
+  function readCatalogFromStorage() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(EXERCISE_CATALOG_KEY));
+      if (Array.isArray(raw)) {
+        return normalizeCatalog(raw);
+      }
+    } catch (error) {
+      console.warn("Failed to parse exercise catalog:", error);
+    }
+    return null;
+  }
+
+  function deriveCatalogFromRecords() {
+    const names = [];
+    const records = getRecords();
+    records.forEach(record => {
+      (record.exercises || []).forEach(ex => {
+        if (ex.name) names.push(ex.name);
+      });
+    });
+    return normalizeCatalog(names);
+  }
+
+  function saveExerciseCatalog(list) {
+    const normalized = normalizeCatalog(list);
+    localStorage.setItem(EXERCISE_CATALOG_KEY, JSON.stringify(normalized));
+    return normalized;
+  }
+
+  function getExerciseCatalog() {
+    let catalog = readCatalogFromStorage();
+    if (!catalog || catalog.length === 0) {
+      catalog = deriveCatalogFromRecords();
+      saveExerciseCatalog(catalog);
+    }
+    return catalog;
+  }
+
+  function addExerciseToCatalog(name) {
+    const trimmed = (name || "").trim();
+    if (!trimmed) return;
+    let catalog = getExerciseCatalog();
+    if (!catalog.includes(trimmed)) {
+      catalog = saveExerciseCatalog([...catalog, trimmed]);
+      refreshExerciseDropdowns();
+      renderExerciseList();
+    }
+  }
+
+  function removeExerciseFromCatalog(name) {
+    let catalog = getExerciseCatalog().filter(item => item !== name);
+    catalog = saveExerciseCatalog(catalog);
+    refreshExerciseDropdowns();
+    renderExerciseList();
+  }
+
+  function renameExerciseInCatalog(oldName, newName) {
+    const trimmed = (newName || "").trim();
+    if (!trimmed || trimmed === oldName) return;
+    let catalog = getExerciseCatalog().filter(item => item !== oldName);
+    if (!catalog.includes(trimmed)) {
+      catalog.push(trimmed);
+    }
+    catalog = saveExerciseCatalog(catalog);
+    refreshExerciseDropdowns();
+    renderExerciseList();
+  }
+
+  const CUSTOM_EXERCISE_VALUE = "__custom__";
+
+  function buildExerciseOptions(selectElem, selectedValue = "") {
+    const catalog = getExerciseCatalog();
+    const previousValue = selectedValue || selectElem.value || "";
+    selectElem.innerHTML = "";
+
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = "種目を選択";
+    placeholder.disabled = true;
+    selectElem.appendChild(placeholder);
+
+    catalog.forEach(name => {
+      const option = document.createElement("option");
+      option.value = name;
+      option.textContent = name;
+      selectElem.appendChild(option);
+    });
+
+    const customOption = document.createElement("option");
+    customOption.value = CUSTOM_EXERCISE_VALUE;
+    customOption.textContent = "＋ 新しい種目を追加";
+    selectElem.appendChild(customOption);
+
+    if (previousValue && !catalog.includes(previousValue)) {
+      const legacyOption = document.createElement("option");
+      legacyOption.value = previousValue;
+      legacyOption.textContent = `${previousValue} (過去の記録)`;
+      legacyOption.dataset.legacy = "true";
+      selectElem.appendChild(legacyOption);
+    }
+
+    if (previousValue) {
+      selectElem.value = previousValue;
+    } else {
+      selectElem.value = "";
+    }
+    selectElem.dataset.currentValue = selectElem.value;
+  }
+
+  function handleExerciseSelectChange(event) {
+    const select = event.target;
+    if (select.value === CUSTOM_EXERCISE_VALUE) {
+      const customName = prompt("追加する種目名を入力してください");
+      if (customName && customName.trim() !== "") {
+        addExerciseToCatalog(customName.trim());
+        select.value = customName.trim();
+        select.dataset.currentValue = select.value;
+      } else {
+        select.value = select.dataset.currentValue || "";
+      }
+    } else {
+      select.dataset.currentValue = select.value;
+    }
+  }
+
+  function refreshExerciseDropdowns() {
+    const selects = document.querySelectorAll(".exercise-name-select");
+    selects.forEach(select => {
+      const current = select.dataset.currentValue || select.value || "";
+      buildExerciseOptions(select, current);
+    });
   }
 
   function getSelectedBodyPart() {
@@ -280,12 +424,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 種目
     const nameCol = document.createElement("div");
-    const nameInput = document.createElement("input");
-    nameInput.type = "text";
-    nameInput.classList.add("form-control", "exercise-name");
-    nameInput.placeholder = "種目";
-    nameInput.value = name;
-    nameCol.appendChild(nameInput);
+    const nameSelect = document.createElement("select");
+    nameSelect.classList.add("form-control", "exercise-name-select");
+    buildExerciseOptions(nameSelect, name);
+    nameSelect.addEventListener("change", handleExerciseSelectChange);
+    nameCol.appendChild(nameSelect);
     row.appendChild(nameCol);
 
     // 負荷 (kg)
@@ -340,7 +483,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let exercises = [];
 
       exerciseRows.forEach(row => {
-        const name = row.querySelector(".exercise-name")?.value || "";
+        const name = row.querySelector(".exercise-name-select")?.value || "";
         const weight = row.querySelector(".exercise-weight")?.value || "";
         const reps = row.querySelector(".exercise-reps")?.value || "";
         const sets = row.querySelector(".exercise-sets")?.value || "";
@@ -362,6 +505,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       saveRecords(records);
+      exercises.forEach(ex => addExerciseToCatalog(ex.name));
       $("#dayModal").modal("hide");
       generateCalendar(currentYear, currentMonth);
       updateTotalVolume(); // 保存後に総合計更新
@@ -393,6 +537,98 @@ document.addEventListener("DOMContentLoaded", function () {
   const bodyPartSelectGlobal = document.getElementById("bodyPartSelect");
   if (bodyPartSelectGlobal) {
     bodyPartSelectGlobal.addEventListener("change", setFixedExercises);
+  }
+
+  const manageExercisesButton = document.getElementById("manageExercisesButton");
+  if (manageExercisesButton) {
+    manageExercisesButton.addEventListener("click", () => {
+      renderExerciseList();
+      $("#exerciseManagerModal").modal("show");
+      const input = document.getElementById("newExerciseInput");
+      if (input) input.value = "";
+    });
+  }
+
+  function renderExerciseList() {
+    const listElem = document.getElementById("exerciseList");
+    if (!listElem) return;
+    const catalog = getExerciseCatalog();
+    listElem.innerHTML = "";
+    if (catalog.length === 0) {
+      const emptyItem = document.createElement("li");
+      emptyItem.classList.add("list-group-item");
+      emptyItem.textContent = "登録された種目はありません。";
+      listElem.appendChild(emptyItem);
+      return;
+    }
+    catalog.forEach(name => {
+      const item = document.createElement("li");
+      item.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
+      const label = document.createElement("span");
+      label.textContent = name;
+      item.appendChild(label);
+
+      const btnGroup = document.createElement("div");
+
+      const editBtn = document.createElement("button");
+      editBtn.type = "button";
+      editBtn.classList.add("btn", "btn-sm", "btn-outline-secondary", "mr-2");
+      editBtn.innerHTML = '<i class="bi bi-pencil-square"></i>';
+      editBtn.addEventListener("click", () => {
+        const newName = prompt("新しい名称を入力してください", name);
+        if (newName && newName.trim() !== "") {
+          if (getExerciseCatalog().includes(newName.trim()) && newName.trim() !== name) {
+            alert("同じ名前が既に存在します。");
+            return;
+          }
+          renameExerciseInCatalog(name, newName.trim());
+        }
+      });
+      btnGroup.appendChild(editBtn);
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.type = "button";
+      deleteBtn.classList.add("btn", "btn-sm", "btn-outline-danger");
+      deleteBtn.innerHTML = '<i class="bi bi-trash"></i>';
+      deleteBtn.addEventListener("click", () => {
+        if (confirm(`「${name}」をリストから削除しますか？`)) {
+          removeExerciseFromCatalog(name);
+        }
+      });
+      btnGroup.appendChild(deleteBtn);
+
+      item.appendChild(btnGroup);
+      listElem.appendChild(item);
+    });
+  }
+
+  function handleAddExerciseFromInput() {
+    const input = document.getElementById("newExerciseInput");
+    if (!input) return;
+    const value = input.value.trim();
+    if (!value) return;
+    if (getExerciseCatalog().includes(value)) {
+      alert("同じ名前が既に存在します。");
+      return;
+    }
+    addExerciseToCatalog(value);
+    input.value = "";
+    renderExerciseList();
+  }
+
+  const addExerciseButton = document.getElementById("addExerciseButton");
+  if (addExerciseButton) {
+    addExerciseButton.addEventListener("click", handleAddExerciseFromInput);
+  }
+
+  const newExerciseInput = document.getElementById("newExerciseInput");
+  if (newExerciseInput) {
+    newExerciseInput.addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        handleAddExerciseFromInput();
+      }
+    });
   }
 
   updateMonthDisplay();
