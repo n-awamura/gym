@@ -660,10 +660,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function requireCurrentUser() {
+    const user = auth.currentUser;
+    if (!user) {
+      throw new Error("ユーザーが認証されていません。再度ログインしてください。");
+    }
+    return user;
+  }
+
+  function getUserBackupsCollection() {
+    const user = requireCurrentUser();
+    return collection(db, "users", user.uid, "backups");
+  }
+
   // Firestore リストア & バックアップ
   async function restoreFromFirestore() {
     try {
-      const backupsCol = collection(db, "backups");
+      const backupsCol = getUserBackupsCollection();
       const q = query(backupsCol, orderBy("timestamp", "desc"), limit(1));
       const querySnapshot = await getDocs(q);
       if (querySnapshot.empty) {
@@ -696,16 +709,22 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function backupToFirestore() {
-    const trainingRecords = JSON.parse(localStorage.getItem("trainingRecords")) || [];
-    const date = new Date();
-    const formattedDateBackup = date.toISOString().split("T")[0];
-    const backupRef = doc(collection(db, "backups"), formattedDateBackup);
-    setDoc(backupRef, {
-      records: trainingRecords,
-      timestamp: serverTimestamp()
-    })
-      .then(() => { console.log("Firestore へのバックアップ成功"); })
-      .catch(error => { console.error("Firestore へのバックアップエラー:", error); });
+    try {
+      const backupsCol = getUserBackupsCollection();
+      const trainingRecords = JSON.parse(localStorage.getItem("trainingRecords")) || [];
+      const date = new Date();
+      const formattedDateBackup = date.toISOString().split("T")[0];
+      const backupRef = doc(backupsCol, formattedDateBackup);
+      setDoc(backupRef, {
+        records: trainingRecords,
+        timestamp: serverTimestamp()
+      })
+        .then(() => { console.log("Firestore へのバックアップ成功"); })
+        .catch(error => { console.error("Firestore へのバックアップエラー:", error); });
+    } catch (error) {
+      console.error("バックアップ準備中にエラー:", error);
+      alert(error.message || "バックアップに必要な認証情報を取得できませんでした。");
+    }
   }
 
   // メモ一覧表示（memo.html 用）
