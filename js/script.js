@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (previousValue && !catalog.includes(previousValue)) {
       const legacyOption = document.createElement("option");
       legacyOption.value = previousValue;
-      legacyOption.textContent = `${previousValue} (過去の記録)`;
+      legacyOption.textContent = previousValue;
       legacyOption.dataset.legacy = "true";
       selectElem.appendChild(legacyOption);
     }
