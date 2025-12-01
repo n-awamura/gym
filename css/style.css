@@ -308,7 +308,8 @@ main.container {
 }
 
 /* 種目の最小幅 (全角3~4文字程度) */
-.exercise-name {
+.exercise-name,
+.exercise-name-select {
   max-width: 5.5em;
 }
 /* 負荷 (半角4~5文字分) */
