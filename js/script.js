@@ -634,6 +634,7 @@ document.addEventListener("DOMContentLoaded", function () {
   updateMonthDisplay();
   generateCalendar(currentYear, currentMonth);
   updateTotalVolume(); // ページ読み込み時に総合計表示
+  ensureWeeklyUpload();
 
   const monthLeft = document.getElementById("monthLeft");
   if (monthLeft) {
@@ -704,6 +705,38 @@ document.addEventListener("DOMContentLoaded", function () {
     syncIcon.addEventListener("click", () => { syncFromFirestore(); });
     syncIcon.textContent = "サーバー同期";
   }
+  const AUTO_UPLOAD_KEY = "lastAutoUploadDate";
+
+  function isNewWeek(lastDateString) {
+    if (!lastDateString) return true;
+    const lastDate = new Date(lastDateString);
+    const today = new Date();
+    const lastWeek = `${lastDate.getFullYear()}-${lastDate.getMonth()}-${getWeekNumber(lastDate)}`;
+    const currentWeek = `${today.getFullYear()}-${today.getMonth()}-${getWeekNumber(today)}`;
+    return lastWeek !== currentWeek;
+  }
+
+  function getWeekNumber(date) {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  }
+
+  async function ensureWeeklyUpload() {
+    try {
+      const lastUploadedDate = localStorage.getItem(AUTO_UPLOAD_KEY);
+      if (!isNewWeek(lastUploadedDate)) return;
+      if (typeof uploadLocalRecordsToFirestore === "function") {
+        await uploadLocalRecordsToFirestore(true);
+      }
+      localStorage.setItem(AUTO_UPLOAD_KEY, new Date().toISOString());
+    } catch (error) {
+      console.error("自動アップロードに失敗しました:", error);
+    }
+  }
+
   const uploadButton = document.getElementById("uploadRecordsButton");
   if (uploadButton) {
     uploadButton.addEventListener("click", () => { uploadLocalRecordsToFirestore(); });
@@ -763,7 +796,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  async function uploadLocalRecordsToFirestore() {
+  async function uploadLocalRecordsToFirestore(isAuto = false) {
     try {
       const user = requireCurrentUser();
       const sessionsRef = collection(db, "users", user.uid, "chatSessions");
@@ -784,10 +817,14 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       });
       await Promise.all(writes);
-      alert("ローカルデータをFirestoreにアップロードしました。");
+      if (!isAuto) {
+        alert("ローカルデータをFirestoreにアップロードしました。");
+      }
     } catch (error) {
       console.error("Firestoreアップロードエラー:", error);
-      alert(error.message || "Firestoreへのアップロードに失敗しました。");
+      if (!isAuto) {
+        alert(error.message || "Firestoreへのアップロードに失敗しました。");
+      }
     }
   }
 
