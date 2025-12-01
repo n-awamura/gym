@@ -704,6 +704,11 @@ document.addEventListener("DOMContentLoaded", function () {
     syncIcon.addEventListener("click", () => { syncFromFirestore(); });
     syncIcon.textContent = "サーバー同期";
   }
+  const uploadButton = document.getElementById("uploadRecordsButton");
+  if (uploadButton) {
+    uploadButton.addEventListener("click", () => { uploadLocalRecordsToFirestore(); });
+  }
+
   const backupIcon = document.getElementById("backupIcon");
   if (backupIcon) {
     backupIcon.addEventListener("click", () => { backupToFirestore(); });
@@ -755,6 +760,34 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (error) {
       console.error("Firestore同期エラー:", error);
       alert(error.message || "Firestoreからの同期に失敗しました。");
+    }
+  }
+
+  async function uploadLocalRecordsToFirestore() {
+    try {
+      const user = requireCurrentUser();
+      const sessionsRef = collection(db, "users", user.uid, "chatSessions");
+      const localRecords = JSON.parse(localStorage.getItem("trainingRecords")) || [];
+      if (localRecords.length === 0) {
+        alert("ローカルに保存されたデータがありません。");
+        return;
+      }
+      const writes = localRecords.map(record => {
+        const docId = record.date || doc(sessionsRef).id;
+        const targetRef = doc(sessionsRef, docId);
+        return setDoc(targetRef, {
+          date: record.date || "",
+          bodyPart: record.bodyPart || "",
+          exercises: Array.isArray(record.exercises) ? record.exercises : [],
+          memo: record.memo || "",
+          updatedAt: serverTimestamp()
+        });
+      });
+      await Promise.all(writes);
+      alert("ローカルデータをFirestoreにアップロードしました。");
+    } catch (error) {
+      console.error("Firestoreアップロードエラー:", error);
+      alert(error.message || "Firestoreへのアップロードに失敗しました。");
     }
   }
 
