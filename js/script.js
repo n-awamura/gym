@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const tokyo = [35.7, 139.7];
   const taiwan = [23.7, 121.0];
+  const AUTO_UPLOAD_KEY = "lastAutoUploadDate";
 
   let currentYear = new Date().getFullYear();
   let currentMonth = new Date().getMonth() + 1;
@@ -705,8 +706,6 @@ document.addEventListener("DOMContentLoaded", function () {
     syncIcon.addEventListener("click", () => { syncFromFirestore(); });
     syncIcon.textContent = "サーバー同期";
   }
-  const AUTO_UPLOAD_KEY = "lastAutoUploadDate";
-
   function isNewWeek(lastDateString) {
     if (!lastDateString) return true;
     const lastDate = new Date(lastDateString);
