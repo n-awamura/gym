@@ -726,7 +726,6 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("バックアップ準備中にエラー:", error);
       alert(error.message || "バックアップに必要な認証情報を取得できませんでした。");
     }
-    }
   }
 
   async function syncFromFirestore() {
