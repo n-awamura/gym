@@ -699,9 +699,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  const restoreIcon = document.getElementById("restoreIcon");
-  if (restoreIcon) {
-    restoreIcon.addEventListener("click", () => { restoreFromFirestore(); });
+  const syncIcon = document.getElementById("restoreIcon");
+  if (syncIcon) {
+    syncIcon.addEventListener("click", () => { syncFromFirestore(); });
+    syncIcon.textContent = "サーバー同期";
   }
   const backupIcon = document.getElementById("backupIcon");
   if (backupIcon) {
@@ -724,6 +725,37 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (error) {
       console.error("バックアップ準備中にエラー:", error);
       alert(error.message || "バックアップに必要な認証情報を取得できませんでした。");
+    }
+    }
+  }
+
+  async function syncFromFirestore() {
+    try {
+      const user = requireCurrentUser();
+      const sessionsRef = collection(db, "users", user.uid, "chatSessions");
+      const querySnapshot = await getDocs(sessionsRef);
+      if (querySnapshot.empty) {
+        alert("Firestoreにデータがありません。");
+        return;
+      }
+      const remoteRecords = [];
+      querySnapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        const normalized = {
+          date: data.date || "",
+          bodyPart: data.bodyPart || "",
+          exercises: Array.isArray(data.exercises) ? data.exercises : [],
+          memo: data.memo || ""
+        };
+        remoteRecords.push(normalized);
+      });
+      localStorage.setItem("trainingRecords", JSON.stringify(remoteRecords));
+      generateCalendar(currentYear, currentMonth);
+      updateTotalVolume();
+      alert("Firestoreから最新のデータを取得しました。");
+    } catch (error) {
+      console.error("Firestore同期エラー:", error);
+      alert(error.message || "Firestoreからの同期に失敗しました。");
     }
   }
 
